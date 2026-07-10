@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>颱風假機率計算器</title>
+<style>
+  :root {
+    --bg-grad-1: #0b1120;
+    --bg-grad-2: #17304d;
+    --card: #1b2537;
+    --card-2: #141d2c;
+    --card-border: #2b3a52;
+    --input-bg: #0f172a;
+    --accent: #38bdf8;
+    --accent-soft: rgba(56,189,248,0.15);
+    --accent2: #fbbf24;
+    --text: #e7edf5;
+    --muted: #93a2b8;
+    --danger: #f87171;
+    --safe: #4ade80;
+    --track-bg: #0f172a;
+    --chip-bg: #0f172a;
+  }
+  :root[data-theme="light"] {
+    --bg-grad-1: #eef4fb;
+    --bg-grad-2: #dbe9fb;
+    --card: #ffffff;
+    --card-2: #f6f9fc;
+    --card-border: #dbe4f0;
+    --input-bg: #f4f7fb;
+    --accent: #0284c7;
+    --accent-soft: rgba(2,132,199,0.1);
+    --accent2: #b45309;
+    --text: #1c2939;
+    --muted: #5b6b82;
+    --danger: #dc2626;
+    --safe: #15803d;
+    --track-bg: #e5edf7;
+    --chip-bg: #eef4fb;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(160deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
+    font-family: "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    padding: 28px 16px 60px;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  .wrap { width: 100%; max-width: 540px; }
+  .top-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 4px;
+  }
+  .theme-btn {
+    border: 1px solid var(--card-border);
+    background: var(--card);
+    color: var(--text);
+    border-radius: 999px;
+    padding: 7px 14px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  header.hero {
+    text-align: center;
+    margin: 8px 0 22px;
+  }
+  header.hero .icon { font-size: 2.4rem; line-height: 1; }
+  h1 {
+    font-size: 1.4rem;
+    margin: 6px 0 4px;
+    letter-spacing: 0.02em;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    padding: 20px 20px 22px;
+    box-shadow: 0 10px 34px rgba(0,0,0,0.18);
+    margin-bottom: 16px;
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+  .step-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 14px;
+  }
+  .step-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.78rem;
+    flex-shrink: 0;
+  }
+  label {
+    display: block;
+    font-size: 0.85rem;
+    margin: 14px 0 6px;
+    color: var(--muted);
+  }
+  label:first-of-type { margin-top: 0; }
+  select, input[type="date"], input[type="number"] {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--card-border);
+    background: var(--input-bg);
+    color: var(--text);
+    font-size: 0.95rem;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  select {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1l6 6 6-6' stroke='%2393a2b8' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 34px;
+  }
+  .hint {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 5px;
+    line-height: 1.5;
+  }
+  .county-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    background: var(--chip-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 999px;
+    padding: 5px 12px;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .county-badge b { color: var(--accent); font-size: 0.8rem; }
+  .quick-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    font-size: 0.78rem;
+    color: var(--accent);
+    text-decoration: none;
+    border: 1px solid var(--card-border);
+    border-radius: 999px;
+    padding: 6px 14px;
+    background: var(--card);
+  }
+  .locate-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .locate-row select { flex: 1; }
+  .locate-btn {
+    flex-shrink: 0;
+    border: 1px solid var(--card-border);
+    background: var(--card-2);
+    color: var(--text);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .locate-btn:disabled { opacity: 0.6; cursor: wait; }
+  .locate-status {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 6px;
+    min-height: 1em;
+  }
+  .checkbox-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 14px;
+    background: var(--card-2);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 10px 12px;
+  }
+  .checkbox-row input { width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0; }
+  .checkbox-row label { margin: 0; font-size: 0.85rem; color: var(--text); }
+  .btn {
+    width: 100%;
+    margin-top: 4px;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent), #0ea5e9);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 6px 20px var(--accent-soft);
+  }
+  .btn:active { transform: scale(0.98); }
+  .result-card {
+    display: none;
+    text-align: center;
+  }
+  .result-card.show { display: block; animation: fadeUp 0.35s ease; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .percent {
+    font-size: 3.2rem;
+    font-weight: 800;
+    margin: 6px 0 0;
+  }
+  .msg-top { font-size: 1rem; color: var(--text); font-weight: 600; margin: 0 0 4px; }
+  .msg-bottom { font-size: 0.88rem; color: var(--muted); margin: 6px 0 0; }
+  .bar-bg {
+    width: 100%;
+    height: 12px;
+    border-radius: 999px;
+    background: var(--track-bg);
+    overflow: hidden;
+    margin-top: 14px;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.5s ease;
+  }
+  .checklist {
+    text-align: left;
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    background: var(--card-2);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 9px 12px;
+  }
+  .check-item .dot {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem;
+    flex-shrink: 0;
+  }
+  .dot.yes { background: rgba(74,222,128,0.18); color: var(--safe); }
+  .dot.no { background: rgba(148,163,184,0.18); color: var(--muted); }
+  .hist-line {
+    margin-top: 14px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .disclaimer {
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.75;
+    margin-top: 18px;
+  }
+  .disclaimer a { color: var(--accent); }
+  .holiday-note {
+    text-align: center;
+    color: var(--accent2);
+    font-size: 0.88rem;
+    margin-top: 10px;
+    display: none;
+  }
+  .holiday-note.show { display: block; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top-row">
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙 深色</button>
+  </div>
+
+  <header class="hero">
+    <div class="icon">🌀</div>
+    <h1>颱風假機率計算器</h1>
+    <p class="subtitle">依《天然災害停止上班及上課作業辦法》門檻＋近10年各縣市真實停班紀錄，估算隔天放假機率</p>
+    <a class="quick-link" href="https://www.dgpa.gov.tw/typh/daily/nds.html" target="_blank" rel="noopener">🔴 只想看現在官方公告？點這裡查即時停班停課</a>
+  </header>
+
+  <div class="card">
+    <div class="step-title"><span class="step-num">1</span>地點與日期</div>
+
+    <label for="county">縣市</label>
+    <div class="locate-row">
+      <select id="county" onchange="onCountyChange()"></select>
+      <button type="button" class="locate-btn" id="locateBtn" onclick="locateMe()">📍 定位</button>
+    </div>
+    <p class="locate-status" id="locateStatus"></p>
+    <div class="county-badge" id="countyBadge"></div>
+
+    <label for="date">預計放假的日期</label>
+    <input type="date" id="date">
+  </div>
+
+  <div class="card">
+    <div class="step-title"><span class="step-num">2</span>風雨預測</div>
+
+    <label for="wind">預測平均風力</label>
+    <select id="wind">
+      <option value="6">6 級以下</option>
+      <option value="7">7 級</option>
+      <option value="8">8 級</option>
+      <option value="9">9 級</option>
+      <option value="10">10 級以上</option>
+    </select>
+    <p class="hint">法規門檻：平均風力達 7 級以上。</p>
+
+    <label for="gust">預測最大陣風</label>
+    <select id="gust">
+      <option value="9">9 級以下</option>
+      <option value="10">10 級</option>
+      <option value="11">11 級</option>
+      <option value="12">12 級</option>
+      <option value="13">13 級以上</option>
+    </select>
+    <p class="hint">法規門檻：陣風達 10 級以上。</p>
+
+    <label for="terrain">地形類型</label>
+    <select id="terrain">
+      <option value="350">平地為主（門檻累積雨量 350 毫米）</option>
+      <option value="200">山區為主（門檻累積雨量 200 毫米）</option>
+    </select>
+
+    <label for="rain">預測累積雨量（毫米）</label>
+    <input type="number" id="rain" min="0" step="10" value="0">
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="disasterRisk">
+      <label for="disasterRisk">當地已有淹水／坍方等災情，或有致災之虞</label>
+    </div>
+    <p class="hint">法規規定：雨量達門檻，且「已致災或有致災之虞」才會停班停課。</p>
+  </div>
+
+  <button class="btn" onclick="calculate()">估算放假機率</button>
+
+  <div class="holiday-note" id="holidayNote">🎉 你選的日子本來就是週末，反正都放假！</div>
+
+  <div class="card result-card" id="result">
+    <p class="msg-top" id="msgTop"></p>
+    <p class="percent" id="percent"></p>
+    <div class="bar-bg"><div class="bar-fill" id="barFill"></div></div>
+    <p class="msg-bottom" id="msgBottom"></p>
+
+    <div class="checklist" id="checklist"></div>
+
+    <p class="hist-line" id="histLine"></p>
+  </div>
+
+  <p class="disclaimer">
+    法規門檻依據：<a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=S0110022" target="_blank" rel="noopener">天然災害停止上班及上課作業辦法</a>第 4 條——
+    風力達「平均 7 級以上或陣風 10 級以上」，雨量達「參考基準（平地約 350 毫米、山區約 200 毫米）且已致災或有致災之虞」。<br>
+    各縣市歷史傾向依據近 10 年公開統計的縣市颱風假機率（<a href="https://ibuyranking.blogspot.com/2024/10/typhoon-day.html" target="_blank" rel="noopener">資料來源</a>，非官方數據，僅供參考)。<br>
+    即使未達門檻，地方政府仍可能因地形、交通、水電中斷等原因另行宣布；正式結果一律以各縣市政府公告為準，公告通常於前一日晚間 7 時至 10 時前發布。<br>
+    「📍 定位」功能會使用瀏覽器定位權限，並將座標送至開源地圖服務 OpenStreetMap Nominatim 轉換成縣市名稱，僅用於自動選取，不會被本工具儲存或送往其他地方。
+  </p>
+</div>
+
+<script>
+// county: [name, 近10年颱風假機率(%), 法規裁量係數(以全國平均正規化)]
+const counties = [
+  ["屏東縣（含恆春半島）", 87.5],
+  ["高雄市", 84.4],
+  ["台南市", 75.0],
+  ["花蓮縣", 71.9],
+  ["嘉義縣", 65.6],
+  ["澎湖縣", 62.5],
+  ["台東縣", 62.5],
+  ["嘉義市", 59.4],
+  ["宜蘭縣", 56.3],
+  ["雲林縣", 56.3],
+  ["南投縣", 50.0],
+  ["新北市", 46.9],
+  ["連江縣（馬祖）", 46.9],
+  ["台北市", 43.8],
+  ["基隆市", 43.8],
+  ["彰化縣", 43.8],
+  ["台中市", 43.8],
+  ["新竹縣", 43.8],
+  ["金門縣", 43.8],
+  ["桃園市", 40.6],
+  ["新竹市", 40.6],
+  ["苗栗縣", 40.6],
+];
+const avgPct = counties.reduce((s, c) => s + c[1], 0) / counties.length;
+
+function populateCounties() {
+  const sel = document.getElementById('county');
+  const savedIdx = localStorage.getItem('typhoon-county');
+  counties.forEach((c, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = c[0];
+    sel.appendChild(opt);
+  });
+  if (savedIdx !== null && counties[savedIdx]) {
+    sel.value = savedIdx;
+  } else {
+    sel.value = counties.findIndex(c => c[0].startsWith('新北市'));
+  }
+}
+
+function updateCountyBadge() {
+  const idx = parseInt(document.getElementById('county').value, 10);
+  const c = counties[idx];
+  const badge = document.getElementById('countyBadge');
+  badge.innerHTML = `近10年颱風假機率：<b>${c[1]}%</b>（歷史統計參考，非本次預測結果）`;
+}
+
+function onCountyChange() {
+  localStorage.setItem('typhoon-county', document.getElementById('county').value);
+  updateCountyBadge();
+}
+
+function setDefaultDate() {
+  const d = new Date();
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  document.getElementById('date').value = `${yyyy}-${mm}-${dd}`;
+}
+
+function normalizeName(s) {
+  return (s || '').replace(/臺/g, '台');
+}
+
+function findCountyIndex(candidateStrings) {
+  const normed = candidateStrings.filter(Boolean).map(normalizeName);
+  for (let i = 0; i < counties.length; i++) {
+    const core = normalizeName(counties[i][0]).replace(/（.*）/, '');
+    if (normed.some(s => s.includes(core))) return i;
+  }
+  return -1;
+}
+
+function locateMe() {
+  const btn = document.getElementById('locateBtn');
+  const status = document.getElementById('locateStatus');
+
+  if (!navigator.geolocation) {
+    status.textContent = '此瀏覽器不支援定位功能，請手動選擇縣市。';
+    return;
+  }
+
+  btn.disabled = true;
+  status.textContent = '📡 正在定位...';
+
+  navigator.geolocation.getCurrentPosition(async (pos) => {
+    const { latitude, longitude } = pos.coords;
+    try {
+      const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=zh-TW&zoom=10`;
+      const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+      if (!res.ok) throw new Error('reverse geocoding failed');
+      const data = await res.json();
+      const addr = data.address || {};
+      const candidates = [addr.county, addr.city, addr.state, addr.town, addr.city_district, data.display_name];
+      const idx = findCountyIndex(candidates);
+      if (idx >= 0) {
+        document.getElementById('county').value = idx;
+        onCountyChange();
+        status.textContent = `✅ 已定位到：${counties[idx][0]}`;
+      } else {
+        status.textContent = '⚠️ 定位成功，但無法對應到台灣縣市，請手動選擇。';
+      }
+    } catch (e) {
+      status.textContent = '⚠️ 取得地區資訊失敗（可能離線或服務暫時無法使用），請手動選擇。';
+    } finally {
+      btn.disabled = false;
+    }
+  }, (err) => {
+    btn.disabled = false;
+    if (err.code === 1) {
+      status.textContent = '⚠️ 定位權限被拒絕，請手動選擇縣市。';
+    } else if (err.code === 3) {
+      status.textContent = '⚠️ 定位逾時，請再試一次或手動選擇。';
+    } else {
+      status.textContent = '⚠️ 無法取得目前位置，請手動選擇縣市。';
+    }
+  }, { timeout: 8000 });
+}
+
+function getSystemPref() {
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  const btn = document.getElementById('themeBtn');
+  btn.textContent = theme === 'light' ? '☀️ 淺色' : '🌙 深色';
+  localStorage.setItem('typhoon-theme', theme);
+}
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'dark';
+  applyTheme(current === 'light' ? 'dark' : 'light');
+}
+
+(function init() {
+  populateCounties();
+  updateCountyBadge();
+  setDefaultDate();
+  const saved = localStorage.getItem('typhoon-theme');
+  applyTheme(saved || getSystemPref());
+})();
+
+function calculate() {
+  const dateInput = document.getElementById('date').value;
+  const holidayNote = document.getElementById('holidayNote');
+  const resultBox = document.getElementById('result');
+
+  let isWeekend = false;
+  if (dateInput) {
+    const d = new Date(dateInput + 'T00:00:00');
+    const day = d.getDay();
+    isWeekend = (day === 0 || day === 6);
+  }
+
+  const idx = parseInt(document.getElementById('county').value, 10);
+  const county = counties[idx];
+  const exposure = county[1] / avgPct;
+
+  const avgWind = parseFloat(document.getElementById('wind').value);
+  const gust = parseFloat(document.getElementById('gust').value);
+  const rainThreshold = parseFloat(document.getElementById('terrain').value);
+  const rainAmount = parseFloat(document.getElementById('rain').value) || 0;
+  const disasterRisk = document.getElementById('disasterRisk').checked;
+
+  const windMeetsLaw = avgWind >= 7;
+  const gustMeetsLaw = gust >= 10;
+  const rainMeetsLaw = (rainAmount >= rainThreshold) && disasterRisk;
+
+  let base;
+  if (windMeetsLaw || gustMeetsLaw || rainMeetsLaw) {
+    base = 65;
+  } else {
+    base = 8; // 未達法規門檻，僅地方裁量或地形特殊情況
+  }
+
+  const windBonus = Math.max(0, avgWind - 7) * 6;
+  const gustBonus = Math.max(0, gust - 10) * 4;
+  const rainBonus = rainMeetsLaw ? Math.min(20, ((rainAmount - rainThreshold) / rainThreshold) * 20) : 0;
+
+  let raw = (base + windBonus + gustBonus + rainBonus) * exposure;
+  raw = Math.min(98, Math.max(2, raw));
+  const pct = Math.round(raw);
+
+  const percentEl = document.getElementById('percent');
+  percentEl.textContent = pct + '%';
+  const color = pct >= 70 ? 'var(--safe)' : (pct >= 40 ? 'var(--accent2)' : 'var(--danger)');
+  percentEl.style.color = color;
+
+  const barFill = document.getElementById('barFill');
+  barFill.style.width = pct + '%';
+  barFill.style.background = color;
+
+  let topMsg, bottomMsg;
+  if (pct >= 85) {
+    topMsg = '已明顯達到法規門檻，條件相當夠力';
+    bottomMsg = '棉被枕頭準備好，明天大概率可以躺平 🛌';
+  } else if (pct >= 60) {
+    topMsg = '已達或接近法規門檻，但地方仍有裁量空間';
+    bottomMsg = '建議睡前再 check 一次氣象署跟縣市政府粉專公告';
+  } else if (pct >= 35) {
+    topMsg = '尚未明顯達標，機率偏低';
+    bottomMsg = '鬧鐘還是先設一下，別太早開香檳';
+  } else {
+    topMsg = '目前條件離法規門檻還有距離';
+    bottomMsg = '大概率要正常上班上課，早點睡吧';
+  }
+  document.getElementById('msgTop').textContent = topMsg;
+  document.getElementById('msgBottom').textContent = bottomMsg;
+
+  const checklist = document.getElementById('checklist');
+  const items = [
+    { label: `平均風力達 7 級以上（目前選：${avgWind} 級）`, met: windMeetsLaw },
+    { label: `陣風達 10 級以上（目前選：${gust} 級）`, met: gustMeetsLaw },
+    { label: `累積雨量達門檻且有致災之虞（目前：${rainAmount}mm / 門檻 ${rainThreshold}mm）`, met: rainMeetsLaw },
+  ];
+  checklist.innerHTML = items.map(it => `
+    <div class="check-item">
+      <span class="dot ${it.met ? 'yes' : 'no'}">${it.met ? '✓' : '–'}</span>
+      <span>${it.label}</span>
+    </div>
+  `).join('');
+
+  document.getElementById('histLine').textContent =
+    `參考：${county[0]}近10年颱風假機率為 ${county[1]}%（全國平均約 ${avgPct.toFixed(1)}%），本次估算已將此歷史傾向納入計算。`;
+
+  resultBox.classList.add('show');
+
+  if (isWeekend) {
+    holidayNote.classList.add('show');
+  } else {
+    holidayNote.classList.remove('show');
+  }
+}
+</script>
+</body>
+</html>
