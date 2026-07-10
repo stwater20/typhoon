@@ -3,9 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>颱風假機率計算器</title>
+<title>颱風假機率計算器｜依法規門檻＋近10年縣市數據估算</title>
+<meta name="description" content="輸入預測風力、陣風、雨量，依《天然災害停止上班及上課作業辦法》門檻與近10年各縣市颱風假歷史機率，估算隔天放假機率。支援定位自動選縣市，純前端小工具。">
+<meta name="keywords" content="颱風假,停班停課,颱風假機率,天然災害停止上班及上課作業辦法,放假機率計算器,台灣颱風">
+<meta name="author" content="stwater20">
+<link rel="canonical" href="https://stwater20.github.io/typhoon/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌀</text></svg>">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="颱風假機率計算器">
+<meta property="og:title" content="颱風假機率計算器｜依法規門檻＋近10年縣市數據估算">
+<meta property="og:description" content="輸入預測風力、陣風、雨量，依法規門檻與近10年各縣市歷史機率，估算隔天放假機率。">
+<meta property="og:url" content="https://stwater20.github.io/typhoon/">
+<meta property="og:image" content="https://stwater20.github.io/typhoon/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="zh_TW">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="颱風假機率計算器">
+<meta name="twitter:description" content="輸入預測風力、陣風、雨量，估算隔天放假機率，含近10年縣市歷史數據對照。">
+<meta name="twitter:image" content="https://stwater20.github.io/typhoon/og-image.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "颱風假機率計算器",
+  "url": "https://stwater20.github.io/typhoon/",
+  "description": "依《天然災害停止上班及上課作業辦法》門檻與近10年各縣市颱風假歷史機率，估算隔天放假機率的純前端小工具。",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" }
+}
+</script>
+
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1946121873919285"
      crossorigin="anonymous"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
 <style>
   :root {
     --bg-grad-1: #0b1120;
@@ -56,8 +91,36 @@
   .wrap { width: 100%; max-width: 540px; }
   .top-row {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 4px;
+    min-height: 32px;
+  }
+  .share-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .share-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--card-border);
+    background: var(--card);
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+  }
+  .share-btn svg { width: 18px; height: 18px; fill: currentColor; }
+  .share-status {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 8px;
+    min-height: 1em;
   }
   .theme-btn {
     border: 1px solid var(--card-border);
@@ -302,6 +365,7 @@
 <body>
 <div class="wrap">
   <div class="top-row">
+    <a class="github-button" href="https://github.com/stwater20/typhoon" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star stwater20/typhoon on GitHub">Star</a>
     <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙 深色</button>
   </div>
 
@@ -310,6 +374,19 @@
     <h1>颱風假機率計算器</h1>
     <p class="subtitle">依《天然災害停止上班及上課作業辦法》門檻＋近10年各縣市真實停班紀錄，估算隔天放假機率</p>
     <a class="quick-link" href="https://www.dgpa.gov.tw/typh/daily/nds.html" target="_blank" rel="noopener">🔴 只想看現在官方公告？點這裡查即時停班停課</a>
+
+    <div class="share-row">
+      <button type="button" class="share-btn" onclick="shareFacebook()" aria-label="分享到 Facebook" title="分享到 Facebook">
+        <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg>
+      </button>
+      <button type="button" class="share-btn" onclick="shareThreads()" aria-label="分享到 Threads" title="分享到 Threads">
+        <svg viewBox="0 0 24 24"><path d="M12.2 24c-3.3 0-5.9-1.1-7.7-3.2C2.8 18.8 2 16.1 2 12.9 2 9.7 2.9 7 4.6 5 6.5 2.7 9.3 1.5 12.9 1.5c3 0 5.4.9 7.1 2.6 1.4 1.4 2.2 3.2 2.4 5.3l-2.5.2c-.2-1.6-.8-2.8-1.7-3.7-1.2-1.2-2.9-1.8-5.2-1.8-2.7 0-4.8.9-6.1 2.7C5.6 8.2 5 10.3 5 12.9c0 2.5.6 4.6 1.9 6.1 1.3 1.5 3.2 2.4 5.5 2.4 1.9 0 3.5-.5 4.6-1.5 1-.9 1.6-2.1 1.7-3.5-.5.3-1.2.6-2.1.7-1 .2-2 .1-2.9-.1-1.6-.4-2.8-1.5-3-3.1-.2-1.5.5-2.9 1.9-3.7 1.2-.7 2.9-.9 4.6-.5.5.1 1 .3 1.4.5 0-.6-.2-1.1-.5-1.5-.5-.6-1.3-.9-2.4-.9-1.4 0-2.5.5-3.4 1.5l-1.9-1.5c1.3-1.5 3.1-2.3 5.3-2.3 1.9 0 3.4.6 4.4 1.7.9 1 1.4 2.4 1.4 4v.5c1.2 1 1.9 2.5 1.9 4.3 0 2-1 3.7-2.6 4.9-1.5 1.1-3.5 1.7-5.7 1.7Zm.9-9.6c-1.1-.3-2.1-.2-2.8.2-.6.3-.9.8-.8 1.3.1.6.7 1 1.5 1.2.7.2 1.5.2 2.2 0 .8-.2 1.4-.6 1.8-1.1.2-.3.3-.6.3-1-.6-.3-1.3-.5-2-.6Z"/></svg>
+      </button>
+      <button type="button" class="share-btn" onclick="shareInstagram()" aria-label="複製連結分享到 Instagram" title="複製連結分享到 Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 2.1.3 2.9.6.8.3 1.4.7 2 1.3.6.6 1 1.2 1.3 2 .3.8.5 1.7.6 2.9.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 2.1-.6 2.9-.3.8-.7 1.4-1.3 2-.6.6-1.2 1-2 1.3-.8.3-1.7.5-2.9.6-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-2.1-.3-2.9-.6-.8-.3-1.4-.7-2-1.3-.6-.6-1-1.2-1.3-2-.3-.8-.5-1.7-.6-2.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-2.1.6-2.9.3-.8.7-1.4 1.3-2 .6-.6 1.2-1 2-1.3.8-.3 1.7-.5 2.9-.6C8.4 2.2 8.8 2.2 12 2.2Zm0 1.8c-3.1 0-3.5 0-4.7.1-1.1.1-1.7.2-2.1.4-.5.2-.9.4-1.3.8-.4.4-.6.8-.8 1.3-.2.4-.3 1-.4 2.1-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c.1 1.1.2 1.7.4 2.1.2.5.4.9.8 1.3.4.4.8.6 1.3.8.4.2 1 .3 2.1.4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.2 2.1-.4.5-.2.9-.4 1.3-.8.4-.4.6-.8.8-1.3.2-.4.3-1 .4-2.1.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c-.1-1.1-.2-1.7-.4-2.1-.2-.5-.4-.9-.8-1.3-.4-.4-.8-.6-1.3-.8-.4-.2-1-.3-2.1-.4-1.2-.1-1.6-.1-4.7-.1Zm0 3.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Zm0 1.8a2.7 2.7 0 1 0 0 5.4 2.7 2.7 0 0 0 0-5.4Zm4.7-2a1.05 1.05 0 1 1 0 2.1 1.05 1.05 0 0 1 0-2.1Z"/></svg>
+      </button>
+    </div>
+    <p class="share-status" id="shareStatus"></p>
   </header>
 
   <div class="card">
@@ -511,6 +588,31 @@ function locateMe() {
       status.textContent = '⚠️ 無法取得目前位置，請手動選擇縣市。';
     }
   }, { timeout: 8000 });
+}
+
+function shareFacebook() {
+  const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(location.href)}`;
+  window.open(url, '_blank', 'noopener,width=600,height=500');
+}
+
+function shareThreads() {
+  const text = `🌀 颱風假機率計算器，快來看看你放假機率多少！ ${location.href}`;
+  const url = `https://www.threads.net/intent/post?text=${encodeURIComponent(text)}`;
+  window.open(url, '_blank', 'noopener');
+}
+
+function shareInstagram() {
+  const status = document.getElementById('shareStatus');
+  const finish = (ok) => {
+    status.textContent = ok
+      ? '✅ 連結已複製，Instagram 沒有網頁分享功能，貼到限時動態或貼文即可。'
+      : '⚠️ 複製失敗，請手動選取網址列複製。';
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(location.href).then(() => finish(true)).catch(() => finish(false));
+  } else {
+    finish(false);
+  }
 }
 
 function getSystemPref() {

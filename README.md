@@ -1,5 +1,7 @@
 # 颱風假機率計算器 🌀
 
+🔗 **網站：[https://stwater20.github.io/typhoon/](https://stwater20.github.io/typhoon/)**
+
 純前端小工具（單一 `index.html`，無需後端），輸入預測風力、陣風、雨量，估算隔天放颱風假的機率。娛樂參考用，正式結果一律以各縣市政府公告為準。
 
 ## 功能
@@ -12,6 +14,9 @@
 - 頁首有「查即時停班停課公告」快速連結，只想看官方結果的人不用填表單
 - 淺色／深色模式切換，記住上次選擇，預設跟隨系統
 - 支援手機瀏覽器
+- Facebook／Threads 一鍵分享，Instagram 沒有網頁分享 API，改用「複製連結」
+- 頁首內嵌 GitHub Star 按鈕（即時星數）
+- 基本 SEO：meta description/keywords、Open Graph／Twitter Card 分享預覽圖、canonical、JSON-LD、robots.txt、sitemap.xml
 
 ## 資料來源與係數計算方式
 
