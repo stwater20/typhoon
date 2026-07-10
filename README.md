@@ -16,7 +16,10 @@
 - 支援手機瀏覽器
 - Facebook／Threads 一鍵分享，Instagram 沒有網頁分享 API，改用「複製連結」
 - 頁首內嵌 GitHub Star 按鈕（即時星數）
-- 基本 SEO：meta description/keywords、Open Graph／Twitter Card 分享預覽圖、canonical、JSON-LD、robots.txt、sitemap.xml
+- 基本 SEO：meta description/keywords、Open Graph／Twitter Card 分享預覽圖、canonical、JSON-LD、robots.txt、sitemap.xml、ads.txt
+- PWA：可加到手機主畫面、離線快取基本頁面（manifest.json + sw.js）
+- 常見問題（FAQ）區塊，含 FAQPage 結構化資料，幫助搜尋引擎長尾流量
+- 無障礙細節：focus 樣式、狀態文字 aria-live
 
 ## 資料來源與係數計算方式
 

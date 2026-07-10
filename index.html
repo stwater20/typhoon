@@ -10,6 +10,13 @@
 <link rel="canonical" href="https://stwater20.github.io/typhoon/">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌀</text></svg>">
 
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0b1120">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="颱風假計算器">
+
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="颱風假機率計算器">
 <meta property="og:title" content="颱風假機率計算器｜依法規門檻＋近10年縣市數據估算">
@@ -35,6 +42,39 @@
   "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Any",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "颱風假是誰決定的？",
+      "acceptedAnswer": { "@type": "Answer", "text": "依《天然災害停止上班及上課作業辦法》，是否停止上班及上課由各直轄市、縣（市）首長決定並公告，中央氣象署只負責提供風力、雨量等預報資料作為判斷依據，並不會直接宣布停班停課。" }
+    },
+    {
+      "@type": "Question",
+      "name": "為什麼台北、新北、基隆常常一起放假？",
+      "acceptedAnswer": { "@type": "Answer", "text": "北北基（台北市、新北市、基隆市）從2016年起建立聯防機制，三縣市首長會互相聯繫協調，盡量同步公告，避免通勤族在只有一個縣市放假時卡在半路的情況，但仍可能因各自轄區天氣狀況不同而分開發布。" }
+    },
+    {
+      "@type": "Question",
+      "name": "平均風力和陣風有什麼不同？",
+      "acceptedAnswer": { "@type": "Answer", "text": "平均風力是一段時間（通常10分鐘）內風速的平均值，陣風則是瞬間最大風速，數值通常明顯高於平均風力。法規門檻是平均風力達7級以上，或陣風達10級以上，兩者符合其中一項就達標。" }
+    },
+    {
+      "@type": "Question",
+      "name": "只下雨沒有颱風也會放假嗎？",
+      "acceptedAnswer": { "@type": "Answer", "text": "會。法規也訂有雨量門檻，只要累積雨量達到參考基準（平地約350毫米、山區約200毫米），且已經致災或有致災之虞，即使風力未達標，地方政府一樣可以宣布停止上班及上課，這也是強降雨、共伴效應等情境常見的停班原因。" }
+    },
+    {
+      "@type": "Question",
+      "name": "停班停課公告通常什麼時候發布？",
+      "acceptedAnswer": { "@type": "Answer", "text": "依規定，全日或上午半日停止上班及上課的公告，應於前一日晚間7時至10時前發布；如果是白天才決定隔天下午或其他時段停班，也會依情況即時公告，實際時間仍以各縣市政府發布為準。" }
+    }
+  ]
 }
 </script>
 
@@ -360,6 +400,39 @@
     display: none;
   }
   .holiday-note.show { display: block; }
+  .faq-item {
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 4px 14px;
+    margin-bottom: 10px;
+    background: var(--card-2);
+  }
+  .faq-item summary {
+    cursor: pointer;
+    padding: 12px 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    list-style: none;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::before { content: "▸ "; color: var(--accent); }
+  .faq-item[open] summary::before { content: "▾ "; }
+  .faq-item p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin: 0 0 14px;
+  }
+  a:focus-visible,
+  button:focus-visible,
+  select:focus-visible,
+  input:focus-visible,
+  summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
 </style>
 </head>
 <body>
@@ -386,7 +459,7 @@
         <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 2.1.3 2.9.6.8.3 1.4.7 2 1.3.6.6 1 1.2 1.3 2 .3.8.5 1.7.6 2.9.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 2.1-.6 2.9-.3.8-.7 1.4-1.3 2-.6.6-1.2 1-2 1.3-.8.3-1.7.5-2.9.6-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-2.1-.3-2.9-.6-.8-.3-1.4-.7-2-1.3-.6-.6-1-1.2-1.3-2-.3-.8-.5-1.7-.6-2.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-2.1.6-2.9.3-.8.7-1.4 1.3-2 .6-.6 1.2-1 2-1.3.8-.3 1.7-.5 2.9-.6C8.4 2.2 8.8 2.2 12 2.2Zm0 1.8c-3.1 0-3.5 0-4.7.1-1.1.1-1.7.2-2.1.4-.5.2-.9.4-1.3.8-.4.4-.6.8-.8 1.3-.2.4-.3 1-.4 2.1-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c.1 1.1.2 1.7.4 2.1.2.5.4.9.8 1.3.4.4.8.6 1.3.8.4.2 1 .3 2.1.4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.2 2.1-.4.5-.2.9-.4 1.3-.8.4-.4.6-.8.8-1.3.2-.4.3-1 .4-2.1.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c-.1-1.1-.2-1.7-.4-2.1-.2-.5-.4-.9-.8-1.3-.4-.4-.8-.6-1.3-.8-.4-.2-1-.3-2.1-.4-1.2-.1-1.6-.1-4.7-.1Zm0 3.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Zm0 1.8a2.7 2.7 0 1 0 0 5.4 2.7 2.7 0 0 0 0-5.4Zm4.7-2a1.05 1.05 0 1 1 0 2.1 1.05 1.05 0 0 1 0-2.1Z"/></svg>
       </button>
     </div>
-    <p class="share-status" id="shareStatus"></p>
+    <p class="share-status" id="shareStatus" role="status" aria-live="polite"></p>
   </header>
 
   <div class="card">
@@ -397,7 +470,7 @@
       <select id="county" onchange="onCountyChange()"></select>
       <button type="button" class="locate-btn" id="locateBtn" onclick="locateMe()">📍 定位</button>
     </div>
-    <p class="locate-status" id="locateStatus"></p>
+    <p class="locate-status" id="locateStatus" role="status" aria-live="polite"></p>
     <div class="county-badge" id="countyBadge"></div>
 
     <label for="date">預計放假的日期</label>
@@ -456,6 +529,31 @@
     <div class="checklist" id="checklist"></div>
 
     <p class="hist-line" id="histLine"></p>
+  </div>
+
+  <div class="card">
+    <div class="step-title"><span class="step-num">?</span>常見問題</div>
+
+    <details class="faq-item">
+      <summary>颱風假是誰決定的？</summary>
+      <p>依《天然災害停止上班及上課作業辦法》，是否停止上班及上課由各直轄市、縣（市）首長決定並公告，中央氣象署只負責提供風力、雨量等預報資料作為判斷依據，並不會直接宣布停班停課。</p>
+    </details>
+    <details class="faq-item">
+      <summary>為什麼台北、新北、基隆常常一起放假？</summary>
+      <p>北北基（台北市、新北市、基隆市）從2016年起建立聯防機制，三縣市首長會互相聯繫協調，盡量同步公告，避免通勤族在只有一個縣市放假時卡在半路的情況，但仍可能因各自轄區天氣狀況不同而分開發布。</p>
+    </details>
+    <details class="faq-item">
+      <summary>平均風力和陣風有什麼不同？</summary>
+      <p>平均風力是一段時間（通常10分鐘）內風速的平均值，陣風則是瞬間最大風速，數值通常明顯高於平均風力。法規門檻是平均風力達7級以上，或陣風達10級以上，兩者符合其中一項就達標。</p>
+    </details>
+    <details class="faq-item">
+      <summary>只下雨沒有颱風也會放假嗎？</summary>
+      <p>會。法規也訂有雨量門檻，只要累積雨量達到參考基準（平地約350毫米、山區約200毫米），且已經致災或有致災之虞，即使風力未達標，地方政府一樣可以宣布停止上班及上課，這也是強降雨、共伴效應等情境常見的停班原因。</p>
+    </details>
+    <details class="faq-item">
+      <summary>停班停課公告通常什麼時候發布？</summary>
+      <p>依規定，全日或上午半日停止上班及上課的公告，應於前一日晚間7時至10時前發布；如果是白天才決定隔天下午或其他時段停班，也會依情況即時公告，實際時間仍以各縣市政府發布為準。</p>
+    </details>
   </div>
 
   <p class="disclaimer">
@@ -729,6 +827,12 @@ function calculate() {
   } else {
     holidayNote.classList.remove('show');
   }
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
 }
 </script>
 </body>
