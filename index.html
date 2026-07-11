@@ -314,6 +314,7 @@
   .btn {
     width: 100%;
     margin-top: 4px;
+    margin-bottom: 16px;
     padding: 15px;
     border: none;
     border-radius: 12px;
@@ -570,7 +571,7 @@
 <script>
 // county: [name, 近10年颱風假機率(%), 法規裁量係數(以全國平均正規化)]
 const counties = [
-  ["屏東縣（含恆春半島）", 87.5],
+  ["屏東縣", 87.5],
   ["高雄市", 84.4],
   ["台南市", 75.0],
   ["花蓮縣", 71.9],
@@ -582,7 +583,7 @@ const counties = [
   ["雲林縣", 56.3],
   ["南投縣", 50.0],
   ["新北市", 46.9],
-  ["連江縣（馬祖）", 46.9],
+  ["連江縣", 46.9],
   ["台北市", 43.8],
   ["基隆市", 43.8],
   ["彰化縣", 43.8],
@@ -595,6 +596,11 @@ const counties = [
 ];
 const avgPct = counties.reduce((s, c) => s + c[1], 0) / counties.length;
 
+const countyHints = {
+  '屏東縣': '含恆春半島',
+  '連江縣': '馬祖',
+};
+
 function populateCounties() {
   const sel = document.getElementById('county');
   const savedIdx = localStorage.getItem('typhoon-county');
@@ -602,6 +608,7 @@ function populateCounties() {
     const opt = document.createElement('option');
     opt.value = i;
     opt.textContent = c[0];
+    if (countyHints[c[0]]) opt.title = countyHints[c[0]];
     sel.appendChild(opt);
   });
   if (savedIdx !== null && counties[savedIdx]) {
@@ -614,8 +621,9 @@ function populateCounties() {
 function updateCountyBadge() {
   const idx = parseInt(document.getElementById('county').value, 10);
   const c = counties[idx];
+  const hint = countyHints[c[0]] ? `${countyHints[c[0]]}・` : '';
   const badge = document.getElementById('countyBadge');
-  badge.innerHTML = `近10年颱風假機率：<b>${c[1]}%</b>（歷史統計參考，非本次預測結果）`;
+  badge.innerHTML = `${hint}近10年颱風假機率：<b>${c[1]}%</b>（歷史統計參考，非本次預測結果）`;
 }
 
 function onCountyChange() {
