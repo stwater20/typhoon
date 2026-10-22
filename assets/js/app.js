@@ -268,7 +268,7 @@
     document.documentElement.setAttribute('data-theme', theme);
     $('themeBtn').textContent = theme === 'light' ? '☀️ 淺色' : '🌙 深色';
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', theme === 'light' ? '#f3f6fb' : '#0a0f1c');
+    if (meta) meta.setAttribute('content', theme === 'light' ? '#f4f0e7' : '#070b14');
     store.set('typhoon-theme', theme);
   }
 

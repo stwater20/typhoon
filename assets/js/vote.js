@@ -211,7 +211,7 @@ function buildTiles() {
     b.id = `tile-${c.code}`;
     b.style.gridRow = String(c.row);
     b.style.gridColumn = String(c.col);
-    b.innerHTML = `<span class="t-name">${c.short}</span><span class="t-val">？？</span>`;
+    b.innerHTML = `<span class="t-name">${c.short}</span><span class="t-val">？？</span><span class="t-bar"><i></i></span>`;
     b.addEventListener('click', () => T.setCounty(c.code, 'vote'));
     map.appendChild(b);
   });
@@ -255,7 +255,10 @@ function renderBoard(animate) {
     total += t.total;
     const tile = $(`tile-${c.code}`);
     const val = tile.querySelector('.t-val');
+    const bar = tile.querySelector('.t-bar i');
     tile.classList.toggle('hidden-val', !revealed);
+    tile.classList.toggle('has-votes', revealed && t.total > 0);
+    bar.style.width = revealed && t.ratio !== null ? `${Math.round(t.ratio * 100)}%` : '0';
     tile.classList.remove('lean-yes', 'lean-no');
     tile.setAttribute('aria-pressed', String(c.code === state.code));
 
@@ -305,6 +308,32 @@ function renderBoard(animate) {
   }
 
   renderRanking(rows, revealed);
+  renderTicker(rows, revealed, total);
+}
+
+// 開票快訊跑馬燈：內容重複兩份，CSS 位移 -50% 就能無縫循環
+function renderTicker(rows, revealed, total) {
+  const when = dateLabel(state.date);
+  let html;
+  if (!revealed) {
+    html = `<b>${when}</b> 放假預測投票中<span class="sep">◆</span>全台已有 <b>${fmtInt(total)}</b> 人投票`
+      + '<span class="sep">◆</span>投下一票解鎖各縣市開票結果<span class="sep">◆</span>前一天 19:00 截止投票<span class="sep">◆</span>';
+  } else {
+    const items = rows.filter((r) => r.t.total > 0)
+      .sort((a, b) => b.t.total - a.t.total)
+      .map(({ c, t }) => {
+        const actual = state.result && actualChoice(state.result[c.code]);
+        if (actual) return `${c.short} 官方公告 <b class="${actual === 'yes' ? 'ty' : 'tn'}">${actual === 'yes' ? '放假' : '照常'}</b>`;
+        const pct = Math.round(t.ratio * 100);
+        return pct >= 50 ? `${c.short} <b class="ty">${pct}%</b> 猜放假` : `${c.short} <b class="tn">${100 - pct}%</b> 猜上班`;
+      });
+    html = `<b>${when}</b> 開票快訊・總票數 <b>${fmtInt(total)}</b><span class="sep">◆</span>`
+      + (items.length ? items.join('<span class="sep">◆</span>') : '還沒有人投票，搶頭香！') + '<span class="sep">◆</span>';
+  }
+  const inner = $('tickerInner');
+  if (inner.dataset.html === html) return;
+  inner.dataset.html = html;
+  inner.innerHTML = `<span>${html}</span><span aria-hidden="true">${html}</span>`;
 }
 
 function renderRanking(rows, revealed) {

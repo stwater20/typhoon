@@ -12,7 +12,7 @@
 
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#0a0f1c">
+<meta name="theme-color" content="#070b14">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="颱風假計算器">
@@ -95,6 +95,9 @@
 }
 </script>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
 <link rel="stylesheet" href="assets/css/style.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1946121873919285" crossorigin="anonymous"></script>
 <script async defer src="https://buttons.github.io/buttons.js"></script>
@@ -105,8 +108,8 @@
 <header class="site-header">
   <div class="container">
     <a class="brand" href="#top" aria-label="颱風假機率計算器 首頁">
-      <span class="brand-mark" aria-hidden="true">🌀</span>
-      <span>颱風假機率</span>
+      <span class="brand-mark"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="5.2" fill="none" stroke="currentColor" stroke-width="3"/><path d="M16 10.8C16 5 20.5 2.6 26 3.2" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M16 21.2c0 5.8-4.5 8.2-10 7.6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span>
+      <span class="brand-text">颱風假機率<small>TYPHOON DAY-OFF</small></span>
     </a>
     <nav class="nav" aria-label="主要導覽">
       <a href="#calc">機率估算</a>
@@ -122,30 +125,99 @@
 
 <main id="top">
   <section class="hero">
-    <div class="container">
-      <a class="live-chip" href="#vote" id="heroChip"><span class="pulse" aria-hidden="true"></span><span id="heroChipText">網友開票所開張中，來預測明天放不放假</span></a>
-      <h1>明天放不放颱風假？<br><span class="grad">先算機率，再和全台一起開票</span></h1>
-      <p class="lead">依《天然災害停止上班及上課作業辦法》門檻＋近 10 年各縣市停班紀錄估算放假機率，再投下你的一票，看全台網友怎麼押，公告後揭曉誰是颱風假預言家。</p>
-      <div class="hero-ctas">
-        <a class="btn btn-primary" href="#calc">開始估算</a>
-        <a class="btn btn-ghost" href="#vote">🗳️ 我要投票</a>
-        <a class="btn btn-ghost" href="https://www.dgpa.gov.tw/typh/daily/nds.html" target="_blank" rel="noopener">🔴 官方即時公告</a>
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <a class="kicker" href="#vote" id="heroChip"><span class="live-tag"><span class="pulse" aria-hidden="true"></span>LIVE</span><span id="heroChipText">網友開票所開張中，來預測明天放不放假</span></a>
+        <h1>明天<br>放不放<em>颱風假</em>？</h1>
+        <p class="lead">依《天然災害停止上班及上課作業辦法》門檻＋近 10 年各縣市停班紀錄估算放假機率，再投下你的一票，看全台網友怎麼押，公告後揭曉誰是颱風假預言家。</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#calc">開始估算 <span aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost" href="#vote">🗳️ 我要投票</a>
+        </div>
+        <a class="official-link" href="https://www.dgpa.gov.tw/typh/daily/nds.html" target="_blank" rel="noopener">只想看官方結果？查人事總處即時停班停課公告 ↗</a>
+        <dl class="hero-stats">
+          <div><dt>涵蓋縣市</dt><dd>22</dd></div>
+          <div><dt>歷史紀錄</dt><dd>10<small>年</small></dd></div>
+          <div><dt>投票截止</dt><dd>19:00</dd></div>
+        </dl>
       </div>
-      <div class="trust-row">
-        <span>⚖️ 法規門檻計算</span>
-        <span>📊 22 縣市近 10 年紀錄</span>
-        <span>🗳️ 一人一天一票</span>
-        <span>🔒 不需註冊、不收個資</span>
+      <div class="hero-visual" aria-hidden="true">
+        <svg class="radar" viewBox="0 0 400 400">
+          <defs>
+            <radialGradient id="rdBg" cx="50%" cy="50%" r="50%">
+              <stop offset="0" stop-color="var(--radar-1)"/>
+              <stop offset="1" stop-color="var(--radar-2)"/>
+            </radialGradient>
+            <linearGradient id="rdSweep" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="var(--accent)" stop-opacity="0"/>
+              <stop offset="1" stop-color="var(--accent)" stop-opacity=".45"/>
+            </linearGradient>
+            <radialGradient id="tyCore" cx="50%" cy="50%" r="50%">
+              <stop offset="0" stop-color="var(--cloud)" stop-opacity=".95"/>
+              <stop offset=".55" stop-color="var(--cloud)" stop-opacity=".35"/>
+              <stop offset="1" stop-color="var(--cloud)" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="3.5"/></filter>
+            <clipPath id="rdClip"><circle cx="200" cy="200" r="190"/></clipPath>
+          </defs>
+          <circle cx="200" cy="200" r="190" fill="url(#rdBg)"/>
+          <g clip-path="url(#rdClip)">
+            <g class="rd-grid">
+              <circle cx="200" cy="200" r="50"/><circle cx="200" cy="200" r="100"/><circle cx="200" cy="200" r="150"/>
+              <path d="M10 200H390M200 10V390"/>
+              <path class="rd-lat" d="M10 128H390M10 272H390M128 10V390M272 10V390"/>
+            </g>
+            <path class="taiwan" d="M206 120c8-4 16-2 19 6 4 10 3 22 0 34-3 14-8 28-13 42-5 15-9 30-15 44-4 10-8 19-14 26-3 3-7 2-8-2-2-9-4-18-8-26-5-11-9-22-10-34-1-14 0-28 5-41 5-14 13-27 24-38 6-6 13-9 20-11z"/>
+            <g class="track">
+              <path d="M318 330C312 300 300 266 286 236"/>
+              <circle cx="318" cy="330" r="4"/><circle cx="308" cy="290" r="4"/>
+              <text x="276" y="344">+48h</text><text x="318" y="288">+24h</text>
+            </g>
+            <g class="typhoon" transform="translate(286 236)">
+              <g class="spin">
+                <circle r="70" fill="url(#tyCore)"/>
+                <g filter="url(#soft)" class="bands">
+                  <path d="M0-14C30-18 56 2 58 34 60 62 38 84 6 92"/>
+                  <path transform="rotate(120)" d="M0-14C30-18 56 2 58 34 60 62 38 84 6 92"/>
+                  <path transform="rotate(240)" d="M0-14C30-18 56 2 58 34 60 62 38 84 6 92"/>
+                </g>
+                <g class="bands thin">
+                  <path d="M0-24C40-28 76 4 74 48"/>
+                  <path transform="rotate(120)" d="M0-24C40-28 76 4 74 48"/>
+                  <path transform="rotate(240)" d="M0-24C40-28 76 4 74 48"/>
+                </g>
+              </g>
+              <circle r="7" class="eye"/>
+            </g>
+            <g class="sweep"><path d="M200 200L200 10A190 190 0 0 1 334.4 65.6Z" fill="url(#rdSweep)"/></g>
+            <g class="blips">
+              <circle cx="214" cy="132" r="3"/><circle cx="190" cy="212" r="3"/><circle cx="178" cy="262" r="3"/><circle cx="214" cy="240" r="3"/>
+            </g>
+          </g>
+          <circle cx="200" cy="200" r="190" class="rd-rim"/>
+          <g class="rd-label">
+            <text x="200" y="28" text-anchor="middle">N</text>
+            <text x="30" y="205">120°E</text>
+            <text x="318" y="205">122°E</text>
+            <text x="206" y="383">TW RADAR · 開票雷達</text>
+          </g>
+        </svg>
       </div>
     </div>
   </section>
+
+  <div class="ticker" role="region" aria-label="開票快訊">
+    <span class="ticker-tag">開票快訊</span>
+    <div class="ticker-track"><div class="ticker-inner" id="tickerInner"><span>網友開票所開張中・投下一票解鎖全台開票結果・前一天 19:00 截止投票・</span><span aria-hidden="true">網友開票所開張中・投下一票解鎖全台開票結果・前一天 19:00 截止投票・</span></div></div>
+  </div>
 
   <!-- ===== 機率估算 ===== -->
   <section class="section" id="calc">
     <div class="container">
       <div class="section-head">
+        <span class="sec-num" aria-hidden="true">01</span>
         <div>
-          <div class="eyebrow">Step 1 · 模型估算</div>
+          <div class="eyebrow">MODEL ESTIMATE · 模型估算</div>
           <h2>颱風假機率計算器</h2>
           <p>輸入氣象署預報的風力與雨量，依法規門檻與縣市歷史傾向估算。</p>
         </div>
@@ -222,15 +294,16 @@
         <div class="result-col">
           <div class="card result-card" id="result" aria-live="polite">
             <div class="result-empty">
-              <div class="big" aria-hidden="true">🌀</div>
+              <div class="big" aria-hidden="true"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="5.2" fill="none" stroke="currentColor" stroke-width="3"/><path d="M16 10.8C16 5 20.5 2.6 26 3.2" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M16 21.2c0 5.8-4.5 8.2-10 7.6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></div>
               <p>填好左邊的風雨條件後按「估算放假機率」<br>結果會顯示在這裡。</p>
             </div>
             <div class="result-body">
               <p class="msg-top" id="msgTop"></p>
               <div class="gauge">
                 <svg viewBox="0 0 120 120" aria-hidden="true">
-                  <circle class="track" cx="60" cy="60" r="52" fill="none" stroke-width="12"/>
-                  <circle class="value" id="gaugeValue" cx="60" cy="60" r="52" fill="none" stroke-width="12" stroke-linecap="round" stroke-dasharray="326.73" stroke-dashoffset="326.73"/>
+                  <circle class="ticks" cx="60" cy="60" r="41" fill="none" stroke-width="3" stroke-dasharray="1 5.44"/>
+                  <circle class="track" cx="60" cy="60" r="52" fill="none" stroke-width="10"/>
+                  <circle class="value" id="gaugeValue" cx="60" cy="60" r="52" fill="none" stroke-width="10" stroke-linecap="round" stroke-dasharray="326.73" stroke-dashoffset="326.73"/>
                 </svg>
                 <div class="gauge-label"><div><span class="pct num" id="percent">0%</span><small>模型估算放假機率</small></div></div>
               </div>
@@ -253,9 +326,10 @@
   <section class="section" id="vote">
     <div class="container">
       <div class="section-head">
+        <span class="sec-num" aria-hidden="true">02</span>
         <div>
-          <div class="eyebrow">Step 2 · 群眾預測</div>
-          <h2>🗳️ 網友開票所</h2>
+          <div class="eyebrow">CROWD FORECAST · 群眾預測</div>
+          <h2>網友開票所</h2>
           <p>替你的縣市投下一票，前一天 19:00 截止投票，縣市公告後揭曉結果。</p>
         </div>
       </div>
@@ -273,7 +347,7 @@
         <div class="vote-side">
           <div class="card board-card">
             <div class="board-head">
-              <h3>全台開票看板</h3>
+              <h3><span class="live-tag"><span class="pulse" aria-hidden="true"></span>LIVE</span>全台開票看板</h3>
               <span class="board-total">總票數 <b class="num" id="totalVotes">0</b></span>
             </div>
             <div class="tile-map" id="tileMap" role="group" aria-label="各縣市開票結果，點選縣市查看詳情"></div>
@@ -349,7 +423,7 @@
   <!-- ===== FAQ ===== -->
   <section class="section" id="faq">
     <div class="container" style="max-width:820px">
-      <div class="section-head"><div><div class="eyebrow">FAQ</div><h2>常見問題</h2></div></div>
+      <div class="section-head"><span class="sec-num" aria-hidden="true">03</span><div><div class="eyebrow">FAQ · 常見問題</div><h2>颱風假，你可能想知道</h2></div></div>
       <details class="faq-item">
         <summary>颱風假是誰決定的？</summary>
         <p>依《天然災害停止上班及上課作業辦法》，是否停止上班及上課由各直轄市、縣（市）首長決定並公告，中央氣象署只負責提供風力、雨量等預報資料作為判斷依據，並不會直接宣布停班停課。</p>
@@ -407,7 +481,7 @@
           <svg viewBox="0 0 24 24"><path d="M10.6 13.4a1 1 0 0 1 0-1.4l3.4-3.4a1 1 0 1 1 1.4 1.4L12 13.4a1 1 0 0 1-1.4 0Zm-2.1 5.3a4 4 0 0 1-2.8-6.8l2-2a1 1 0 0 1 1.4 1.4l-2 2a2 2 0 1 0 2.8 2.8l2-2a1 1 0 1 1 1.4 1.4l-2 2a4 4 0 0 1-2.8 1.2Zm7.6-5.2a1 1 0 0 1-.7-1.7l2-2a2 2 0 1 0-2.8-2.8l-2 2a1 1 0 0 1-1.4-1.4l2-2a4 4 0 1 1 5.6 5.6l-2 2a1 1 0 0 1-.7.3Z"/></svg>
         </button>
       </div>
-      <p>© <span id="year">2026</span> 颱風假機率計算器 · Made in Taiwan 🇹🇼</p>
+      <p>© <span id="year">2026</span> 颱風假機率計算器 · Made in Taiwan</p>
     </div>
   </div>
 </footer>
