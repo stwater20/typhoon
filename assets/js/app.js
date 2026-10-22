@@ -81,7 +81,7 @@
     }
   }
 
-  // ---------- 縣市選擇（計算器與網友預測共用） ----------
+  // ---------- 縣市選擇 ----------
   let currentCode = (function () {
     const saved = store.get('typhoon-county-code');
     if (saved && byCode[saved]) return saved;
