@@ -1,4 +1,4 @@
-/* 網友開票所：投票、即時開票看板、公告揭曉與預言家戰績。
+/* 網友預測：投票、即時預測看板、公告揭曉與預言家戰績。
  * 有 FIREBASE_CONFIG 時連 Firestore（全站共用票數），否則跑示範模式。 */
 import { FIREBASE_CONFIG } from './config.js';
 
@@ -13,7 +13,7 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
 const $ = (id) => document.getElementById(id);
 
 // ---------- 投票時間（必須與 firestore.rules 一致） ----------
-// 預測 D 日：D-2 日 00:00 開放投票，D-1 日 19:00（台灣時間）截止，之後進入開票。
+// 預測 D 日：D-2 日 00:00 開放投票，D-1 日 19:00（台灣時間）截止，之後停止預測、等待公告。
 function pollTimes(date) {
   const [y, m, d] = date.split('-').map(Number);
   const dayStartTw = Date.UTC(y, m - 1, d) - 8 * HOUR;
@@ -222,7 +222,7 @@ function renderToolbar() {
   document.querySelectorAll('#dateTabs .tab').forEach((b) => {
     b.setAttribute('aria-selected', String(b.dataset.date === state.date));
   });
-  const labels = { upcoming: ['voting', '尚未開放'], voting: ['voting', '投票中'], counting: ['counting', '開票中'], revealed: ['revealed', '公告揭曉'] };
+  const labels = { upcoming: ['voting', '尚未開放'], voting: ['voting', '預測進行中'], counting: ['counting', '已截止・等待公告'], revealed: ['revealed', '已有官方公告'] };
   const [cls, text] = labels[state.status];
   $('pollStatus').innerHTML = `<span class="pill ${cls}">${text}</span>`;
   renderCountdown();
@@ -236,12 +236,12 @@ function renderCountdown() {
     const h = Math.floor(left / HOUR);
     const m = Math.floor((left % HOUR) / 60e3);
     const s = Math.floor((left % 60e3) / 1e3);
-    el.innerHTML = `距投票截止 <b>${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}</b>`;
+    el.innerHTML = `距預測截止 <b>${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}</b>`;
   } else if (state.status === 'counting') {
-    el.innerHTML = '投票已截止，等待縣市公告（通常 19:00–22:00）';
+    el.innerHTML = '預測已截止，等待縣市政府公告（通常 19:00–22:00）';
   } else if (state.status === 'revealed') {
     const n = COUNTIES.filter((c) => actualChoice(state.result[c.code])).length;
-    el.innerHTML = `已公告 <b>${n}</b> / 22 縣市`;
+    el.innerHTML = `官方已公告 <b>${n}</b> / 22 縣市`;
   } else {
     el.textContent = '';
   }
@@ -265,15 +265,15 @@ function renderBoard(animate) {
     let label;
     if (!revealed) {
       val.textContent = '？？';
-      label = `${c.name}，投票後解鎖`;
+      label = `${c.name}，送出預測後解鎖`;
     } else if (t.ratio === null) {
       val.textContent = '—';
-      label = `${c.name}，尚無人投票`;
+      label = `${c.name}，尚無人預測`;
     } else {
       const pct = Math.round(t.ratio * 100);
       tile.classList.add(t.ratio >= 0.5 ? 'lean-yes' : 'lean-no');
       tile.style.setProperty('--s', (0.12 + Math.abs(t.ratio - 0.5) * 0.9).toFixed(2));
-      label = `${c.name}，${pct}% 猜放假，共 ${t.total} 票`;
+      label = `${c.name}，${pct}% 網友猜放假，共 ${t.total} 人預測`;
       if (animate && !reduceMotion) {
         val.dataset.val = '0';
         tile.classList.remove('flip');
@@ -303,32 +303,32 @@ function renderBoard(animate) {
   const chip = $('heroChipText');
   const tomorrow = state.dates[0];
   if (state.date === tomorrow) {
-    const st = state.status === 'voting' ? '放假預測投票中' : state.status === 'counting' ? '開票中' : '公告揭曉';
-    chip.textContent = `明天 ${dateLabel(tomorrow)} ${st}・已有 ${fmtInt(total)} 人投票`;
+    const st = state.status === 'voting' ? '放假預測進行中' : state.status === 'counting' ? '預測已截止' : '官方已公告，來對答案';
+    chip.textContent = `明天 ${dateLabel(tomorrow)} ${st}・已有 ${fmtInt(total)} 人參與`;
   }
 
   renderRanking(rows, revealed);
   renderTicker(rows, revealed, total);
 }
 
-// 開票快訊跑馬燈：內容重複兩份，CSS 位移 -50% 就能無縫循環
+// 網友預測跑馬燈：內容重複兩份，CSS 位移 -50% 就能無縫循環
 function renderTicker(rows, revealed, total) {
   const when = dateLabel(state.date);
   let html;
   if (!revealed) {
-    html = `<b>${when}</b> 放假預測投票中<span class="sep">◆</span>全台已有 <b>${fmtInt(total)}</b> 人投票`
-      + '<span class="sep">◆</span>投下一票解鎖各縣市開票結果<span class="sep">◆</span>前一天 19:00 截止投票<span class="sep">◆</span>';
+    html = `<b>${when}</b> 放假預測進行中<span class="sep">◆</span>全台已有 <b>${fmtInt(total)}</b> 人參與`
+      + '<span class="sep">◆</span>送出預測解鎖各縣市統計<span class="sep">◆</span>網友猜測・非官方公告<span class="sep">◆</span>';
   } else {
     const items = rows.filter((r) => r.t.total > 0)
       .sort((a, b) => b.t.total - a.t.total)
       .map(({ c, t }) => {
         const actual = state.result && actualChoice(state.result[c.code]);
-        if (actual) return `${c.short} 官方公告 <b class="${actual === 'yes' ? 'ty' : 'tn'}">${actual === 'yes' ? '放假' : '照常'}</b>`;
+        if (actual) return `${c.short} 官方公告 <b class="${actual === 'yes' ? 'ty' : 'tn'}">${actual === 'yes' ? '停班停課' : '照常上班'}</b>`;
         const pct = Math.round(t.ratio * 100);
-        return pct >= 50 ? `${c.short} <b class="ty">${pct}%</b> 猜放假` : `${c.short} <b class="tn">${100 - pct}%</b> 猜上班`;
+        return pct >= 50 ? `${c.short} <b class="ty">${pct}%</b> 網友猜放假` : `${c.short} <b class="tn">${100 - pct}%</b> 網友猜上班`;
       });
-    html = `<b>${when}</b> 開票快訊・總票數 <b>${fmtInt(total)}</b><span class="sep">◆</span>`
-      + (items.length ? items.join('<span class="sep">◆</span>') : '還沒有人投票，搶頭香！') + '<span class="sep">◆</span>';
+    html = `<b>${when}</b> 網友預測統計（非官方公告）・<b>${fmtInt(total)}</b> 人參與<span class="sep">◆</span>`
+      + (items.length ? items.join('<span class="sep">◆</span>') : '還沒有人預測，搶頭香！') + '<span class="sep">◆</span>';
   }
   const inner = $('tickerInner');
   if (inner.dataset.html === html) return;
@@ -339,14 +339,14 @@ function renderTicker(rows, revealed, total) {
 function renderRanking(rows, revealed) {
   const ol = $('ranking');
   if (!revealed) {
-    ol.innerHTML = '<li class="empty-note" style="display:block">🔒 投票後解鎖排行榜</li>';
+    ol.innerHTML = '<li class="empty-note" style="display:block">🔒 送出預測後解鎖排行榜</li>';
     return;
   }
   const top = rows.filter((r) => r.t.total > 0)
     .sort((a, b) => b.t.ratio - a.t.ratio || b.t.total - a.t.total)
     .slice(0, 6);
   if (!top.length) {
-    ol.innerHTML = '<li class="empty-note" style="display:block">還沒有人投票，搶頭香！</li>';
+    ol.innerHTML = '<li class="empty-note" style="display:block">還沒有人預測，搶頭香！</li>';
     return;
   }
   ol.innerHTML = top.map((r, i) => {
@@ -360,17 +360,17 @@ function renderDetail() {
   const t = tallyOf(state.tally, c.code);
   const revealed = isRevealed();
   $('detailName').textContent = c.name;
-  $('detailSub').textContent = `${dateLabel(state.date)} 放假預測・${fmtInt(t.total)} 票`;
+  $('detailSub').textContent = `${dateLabel(state.date)} 網友預測・${fmtInt(t.total)} 人參與`;
   $('voteCounty').value = c.code;
 
   const vs = $('versus');
   const actual = state.result && actualChoice(state.result[c.code]);
   if (!revealed) {
-    vs.innerHTML = `<div class="versus-hidden">🔒 投下你的一票，立即解鎖開票結果<br>全台目前已有 <b class="num">${fmtInt(Number($('totalVotes').dataset.val) || 0)}</b> 人投票</div>`;
+    vs.innerHTML = `<div class="versus-hidden">🔒 送出你的預測，立即解鎖網友統計<br>全台目前已有 <b class="num">${fmtInt(Number($('totalVotes').dataset.val) || 0)}</b> 人參與</div>`;
   } else {
     const yp = t.ratio === null ? 0 : Math.round(t.ratio * 100);
     const np = t.ratio === null ? 0 : 100 - yp;
-    const stamp = actual ? `<div class="stamp${actual === 'no' ? ' work' : ''}">${actual === 'yes' ? '確定放假' : '照常上班'}</div>` : '';
+    const stamp = actual ? `<div class="official${actual === 'no' ? ' work' : ''}">官方結果：${actual === 'yes' ? '停班停課' : '照常上班'}<small>資料來源：<a href="https://www.dgpa.gov.tw/typh/daily/nds.html" target="_blank" rel="noopener">人事行政總處</a></small></div>` : '';
     const existing = vs.querySelector('.versus-nums');
     if (!existing) {
       vs.innerHTML = `
@@ -383,8 +383,8 @@ function renderDetail() {
     }
     animateNumber($('vsYes'), yp, fmtPct);
     animateNumber($('vsNo'), np, fmtPct);
-    $('vsYesCnt').textContent = `${fmtInt(t.yes)} 票`;
-    $('vsNoCnt').textContent = t.total ? `${fmtInt(t.no)} 票` : '尚無人投票';
+    $('vsYesCnt').textContent = `${fmtInt(t.yes)} 人`;
+    $('vsNoCnt').textContent = t.total ? `${fmtInt(t.no)} 人` : '尚無人預測';
     requestAnimationFrame(() => {
       $('vsBarY').style.width = `${yp}%`;
       $('vsBarN').style.width = `${np}%`;
@@ -419,12 +419,12 @@ function renderVoteControls() {
     q.textContent = `你預測 ${mc.name} ${dateLabel(state.date)}：`;
     msg.className = 'vote-msg ok';
     msg.textContent = mine.county === c.code
-      ? `✅ 已投票：${mine.choice === 'yes' ? '會放假' : '照常上班'}（每人每天一票）`
-      : `你這天已經替 ${mc.name} 投過票了（每人每天一票）`;
+      ? `✅ 你的預測：${mine.choice === 'yes' ? '會放假' : '照常上班'}（每人每天一次）`
+      : `你這天已經預測過 ${mc.name} 了（每人每天一次）`;
   } else if (!state.busy) {
     q.textContent = `你覺得 ${c.name} ${dateLabel(state.date)} 會放颱風假嗎？`;
     msg.className = 'vote-msg';
-    msg.textContent = open ? '投出後不能更改，請替你所在或關心的縣市投票。' : '這天的投票已截止，來看開票結果吧！';
+    msg.textContent = open ? '送出後不能更改。這只是猜猜看，放假與否以官方公告為準。' : '這天的預測已截止，來看網友預測統計吧！';
   }
   $('voteShare').hidden = !mine;
 }
@@ -435,7 +435,7 @@ function renderAll() {
   renderDetail();
 }
 
-// 每個日期第一次「解鎖＋拿到票數」時跑一次開票動畫，之後只做數字更新
+// 每個日期第一次「解鎖＋拿到票數」時跑一次揭曉動畫，之後只做數字更新
 function updateBoard() {
   if (state.animatePending && state.tallyLoaded && isRevealed()) {
     state.animatePending = false;
@@ -475,9 +475,9 @@ async function refreshRecord() {
     else if (hits > 0) { medal = '🌦️'; title = '颱風觀察員'; }
     else { medal = '🌧️'; title = '菜鳥觀測員'; }
   }
-  const stats = !total ? '投票後等公告，猜中就能升級成颱風假預言家。'
-    : settled ? `已投 ${total} 票・揭曉 ${settled} 場・猜中 ${hits} 場（${Math.round(rate * 100)}%）`
-    : `已投 ${total} 票，等待縣市公告揭曉`;
+  const stats = !total ? '送出預測後等公告，猜中就能升級成颱風假預言家。'
+    : settled ? `已預測 ${total} 次・已公告 ${settled} 場・猜中 ${hits} 場（${Math.round(rate * 100)}%）`
+    : `已預測 ${total} 次，等待縣市公告對答案`;
   $('record').innerHTML = `<div class="medal" aria-hidden="true">${medal}</div><div><div class="title">${title}</div><div class="stats">${stats}</div></div>`;
 }
 
@@ -490,7 +490,7 @@ function maybeCelebrate() {
   if (done.includes(state.date)) return;
   store.setJSON(CELEBRATED_KEY, done.concat(state.date).slice(-30));
   if (actual === mine.choice) {
-    toast(`🎉 猜中了！${byCode[mine.county].name}${actual === 'yes' ? '確定放假' : '照常上班'}`);
+    toast(`🎉 猜中了！${byCode[mine.county].name}官方公告${actual === 'yes' ? '停班停課' : '照常上班'}`);
     confetti();
   } else {
     toast(`😅 差一點！${byCode[mine.county].name}官方公告${actual === 'yes' ? '放假' : '照常上班'}`);
@@ -568,7 +568,7 @@ async function castVote(choice) {
   state.busy = true;
   renderVoteControls();
   $('voteMsg').className = 'vote-msg';
-  $('voteMsg').textContent = '🗳️ 投票中…';
+  $('voteMsg').textContent = '🔮 送出中…';
   try {
     await state.backend.vote(date, code, choice);
     state.myVote = { county: code, choice };
@@ -576,7 +576,7 @@ async function castVote(choice) {
     all[date] = state.myVote;
     store.setJSON(MY_VOTES_KEY, all);
     state.busy = false;
-    toast('✅ 投票成功！開票結果已解鎖');
+    toast('✅ 預測已送出！網友統計已解鎖');
     updateBoard();
     renderDetail();
     refreshRecord();
@@ -587,8 +587,8 @@ async function castVote(choice) {
     const msg = $('voteMsg');
     msg.className = 'vote-msg err';
     msg.textContent = e && e.code === 'permission-denied'
-      ? '⚠️ 投票失敗：這天可能已經投過票，或投票已截止。'
-      : '⚠️ 投票失敗，請檢查網路後再試一次。';
+      ? '⚠️ 送出失敗：這天可能已經預測過，或預測已截止。'
+      : '⚠️ 送出失敗，請檢查網路後再試一次。';
     console.warn('[vote] cast failed', e);
   }
 }
@@ -599,12 +599,12 @@ function shareVote() {
   const c = byCode[mine.county];
   const t = tallyOf(state.tally, c.code);
   const pct = t.ratio === null ? null : Math.round(t.ratio * 100);
-  const text = `🌀 我預測${c.name} ${dateLabel(state.date)}${mine.choice === 'yes' ? '會放颱風假 🏖️' : '照常上班 💼'}！`
-    + (pct === null ? '' : `目前 ${pct}% 網友猜放假，`) + '你覺得呢？來投一票 👉';
+  const text = `🌀 我猜${c.name} ${dateLabel(state.date)}${mine.choice === 'yes' ? '會放颱風假 🏖️' : '要照常上班 💼'}`
+    + (pct === null ? '' : `，目前 ${pct}% 網友也猜會放假`) + '（網友預測，非官方公告，放假與否以人事總處公告為準）你覺得呢？👉';
   if (navigator.share) {
-    navigator.share({ title: '颱風假網友開票所', text, url: T.siteUrl() + '#vote' }).catch(() => {});
+    navigator.share({ title: '颱風假網友預測（非官方）', text, url: T.siteUrl() + '#vote' }).catch(() => {});
   } else {
-    T.copyText(`${text} ${T.siteUrl()}#vote`).then((ok) => toast(ok ? '✅ 已複製，貼給朋友一起投票吧' : '⚠️ 複製失敗'));
+    T.copyText(`${text} ${T.siteUrl()}#vote`).then((ok) => toast(ok ? '✅ 已複製，貼給朋友一起猜吧' : '⚠️ 複製失敗'));
   }
 }
 
@@ -650,12 +650,12 @@ async function boot() {
       console.warn('[vote] Firebase 載入失敗，改用示範模式', e);
       state.backend = createDemoBackend();
       badge.textContent = '離線示範資料';
-      badge.title = '無法連上投票伺服器，目前顯示的是模擬票數';
+      badge.title = '無法連上伺服器，目前顯示的是模擬數字';
     }
   } else {
     state.backend = createDemoBackend();
-    badge.textContent = '示範資料・模擬票數';
-    badge.title = '尚未連接投票伺服器：其他縣市的票數為模擬資料，你的票只存在這個瀏覽器';
+    badge.textContent = '示範資料・模擬數字';
+    badge.title = '尚未連接伺服器：其他縣市的數字為模擬資料，你的預測只存在這個瀏覽器';
   }
 
   await selectDate(state.dates[0]);

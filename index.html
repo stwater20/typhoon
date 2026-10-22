@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>颱風假機率計算器＆網友開票所｜明天放不放颱風假？</title>
-<meta name="description" content="明天會放颱風假嗎？依《天然災害停止上班及上課作業辦法》門檻與近10年各縣市停班紀錄估算放假機率，還能和全台網友一起投票預測、即時開票，公告後看看誰是颱風假預言家。">
-<meta name="keywords" content="颱風假,停班停課,颱風假機率,明天放假嗎,颱風假投票,颱風假預測,天然災害停止上班及上課作業辦法,台灣颱風">
+<title>颱風假機率計算器＆網友預測｜明天放不放颱風假？</title>
+<meta name="description" content="明天會放颱風假嗎？依《天然災害停止上班及上課作業辦法》門檻與近10年各縣市停班紀錄估算放假機率，還能和全台網友一起預測、即時統計，公告後看看誰是颱風假預言家。">
+<meta name="keywords" content="颱風假,停班停課,颱風假機率,明天放假嗎,颱風假猜猜看,颱風假預測,天然災害停止上班及上課作業辦法,台灣颱風">
 <meta name="author" content="stwater20">
 <link rel="canonical" href="https://typhoon.sectools.tw/">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌀</text></svg>">
@@ -19,8 +19,8 @@
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="颱風假機率計算器">
-<meta property="og:title" content="明天放不放颱風假？算機率＋全台網友開票中">
-<meta property="og:description" content="依法規門檻與近10年縣市紀錄估算放假機率，再和全台網友一起投票預測、即時開票。">
+<meta property="og:title" content="明天放不放颱風假？算機率＋看全台網友怎麼預測">
+<meta property="og:description" content="依法規門檻與近10年縣市紀錄估算放假機率，再和全台網友一起預測、即時統計。">
 <meta property="og:url" content="https://typhoon.sectools.tw/">
 <meta property="og:image" content="https://typhoon.sectools.tw/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -28,8 +28,8 @@
 <meta property="og:locale" content="zh_TW">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="明天放不放颱風假？算機率＋全台網友開票中">
-<meta name="twitter:description" content="估算放假機率，再和全台網友一起投票預測、即時開票。">
+<meta name="twitter:title" content="明天放不放颱風假？算機率＋看全台網友怎麼預測">
+<meta name="twitter:description" content="估算放假機率，再和全台網友一起預測、即時統計。">
 <meta name="twitter:image" content="https://typhoon.sectools.tw/og-image.png">
 
 <script>
@@ -49,7 +49,7 @@
   "@type": "WebApplication",
   "name": "颱風假機率計算器",
   "url": "https://typhoon.sectools.tw/",
-  "description": "依《天然災害停止上班及上課作業辦法》門檻與近10年各縣市颱風假歷史機率估算放假機率，並提供全台網友投票預測與即時開票。",
+  "description": "依《天然災害停止上班及上課作業辦法》門檻與近10年各縣市颱風假歷史機率估算放假機率，並提供全台網友預測統計（非官方公告）。",
   "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Any",
   "inLanguage": "zh-TW",
@@ -68,8 +68,13 @@
     },
     {
       "@type": "Question",
-      "name": "網友開票是怎麼玩的？",
-      "acceptedAnswer": { "@type": "Answer", "text": "每個人每天可以替自己的縣市投一票，預測隔天會不會放颱風假。投完票就能看到全台各縣市的即時開票結果，前一天晚上 7 點截止投票，等縣市政府正式公告後會蓋上「放假」或「照常」印章，猜中就會累積你的預言家戰績。" }
+      "name": "網友預測是怎麼玩的？",
+      "acceptedAnswer": { "@type": "Answer", "text": "每個人每天可以替一個縣市預測一次，猜隔天會不會放颱風假。送出後就能看到全台網友的預測統計，前一天晚上 7 點截止預測，等縣市政府正式公告後會標上官方結果，猜中就會累積你的預言家戰績。這只是網友意見的統計，不是放假公告，也和官方決定無關。" }
+    },
+    {
+      "@type": "Question",
+      "name": "網友預測的結果可以當作放假依據嗎？",
+      "acceptedAnswer": { "@type": "Answer", "text": "不行。網友預測只是大家主觀猜測的統計，不是政府公告；本站的機率估算也只是依法規門檻做的粗估。是否停班停課，請以行政院人事行政總處「天然災害停止上班及上課情形」網頁與各縣市政府公告為準。也請不要把預測畫面截圖當成放假消息轉傳，散播災害相關不實訊息可能觸犯《災害防救法》與《社會秩序維護法》。" }
     },
     {
       "@type": "Question",
@@ -113,7 +118,7 @@
     </a>
     <nav class="nav" aria-label="主要導覽">
       <a href="#calc">機率估算</a>
-      <a href="#vote">網友開票所</a>
+      <a href="#vote">網友預測</a>
       <a href="#faq">常見問題</a>
     </nav>
     <div class="header-actions">
@@ -127,21 +132,21 @@
   <section class="hero">
     <div class="container hero-grid">
       <div class="hero-copy">
-        <a class="kicker" href="#vote" id="heroChip"><span class="live-tag"><span class="pulse" aria-hidden="true"></span>LIVE</span><span id="heroChipText">網友開票所開張中，來預測明天放不放假</span></a>
+        <a class="kicker" href="#vote" id="heroChip"><span class="live-tag"><span class="pulse" aria-hidden="true"></span>網友預測</span><span id="heroChipText">網友預測進行中：你覺得明天會放假嗎？</span></a>
         <h1>明天<br>放不放<em>颱風假</em>？</h1>
-        <p class="lead">依《天然災害停止上班及上課作業辦法》門檻＋近 10 年各縣市停班紀錄估算放假機率，再投下你的一票，看全台網友怎麼押，公告後揭曉誰是颱風假預言家。</p>
+        <p class="lead">依《天然災害停止上班及上課作業辦法》門檻＋近 10 年各縣市停班紀錄估算放假機率，再猜猜看、看全台網友怎麼想，縣市公告後對答案揭曉誰是颱風假預言家。</p>
         <div class="hero-ctas">
           <a class="btn btn-primary" href="#calc">開始估算 <span aria-hidden="true">→</span></a>
-          <a class="btn btn-ghost" href="#vote">🗳️ 我要投票</a>
+          <a class="btn btn-ghost" href="#vote">🔮 我要預測</a>
         </div>
         <a class="official-link" href="https://www.dgpa.gov.tw/typh/daily/nds.html" target="_blank" rel="noopener">只想看官方結果？查人事總處即時停班停課公告 ↗</a>
         <dl class="hero-stats">
           <div><dt>涵蓋縣市</dt><dd>22</dd></div>
           <div><dt>歷史紀錄</dt><dd>10<small>年</small></dd></div>
-          <div><dt>投票截止</dt><dd>19:00</dd></div>
+          <div><dt>預測截止</dt><dd>19:00</dd></div>
         </dl>
       </div>
-      <div class="hero-visual" aria-hidden="true">
+      <div class="hero-visual" aria-hidden="true" title="裝飾示意圖，非即時氣象資料">
         <svg class="radar" viewBox="0 0 400 400">
           <defs>
             <radialGradient id="rdBg" cx="50%" cy="50%" r="50%">
@@ -168,11 +173,6 @@
               <path class="rd-lat" d="M10 128H390M10 272H390M128 10V390M272 10V390"/>
             </g>
             <path class="taiwan" d="M206 120c8-4 16-2 19 6 4 10 3 22 0 34-3 14-8 28-13 42-5 15-9 30-15 44-4 10-8 19-14 26-3 3-7 2-8-2-2-9-4-18-8-26-5-11-9-22-10-34-1-14 0-28 5-41 5-14 13-27 24-38 6-6 13-9 20-11z"/>
-            <g class="track">
-              <path d="M318 330C312 300 300 266 286 236"/>
-              <circle cx="318" cy="330" r="4"/><circle cx="308" cy="290" r="4"/>
-              <text x="276" y="344">+48h</text><text x="318" y="288">+24h</text>
-            </g>
             <g class="typhoon" transform="translate(286 236)">
               <g class="spin">
                 <circle r="70" fill="url(#tyCore)"/>
@@ -197,18 +197,16 @@
           <circle cx="200" cy="200" r="190" class="rd-rim"/>
           <g class="rd-label">
             <text x="200" y="28" text-anchor="middle">N</text>
-            <text x="30" y="205">120°E</text>
-            <text x="318" y="205">122°E</text>
-            <text x="206" y="383">TW RADAR · 開票雷達</text>
+            <text x="200" y="383" text-anchor="middle">裝飾示意圖・非氣象資料</text>
           </g>
         </svg>
       </div>
     </div>
   </section>
 
-  <div class="ticker" role="region" aria-label="開票快訊">
-    <span class="ticker-tag">開票快訊</span>
-    <div class="ticker-track"><div class="ticker-inner" id="tickerInner"><span>網友開票所開張中・投下一票解鎖全台開票結果・前一天 19:00 截止投票・</span><span aria-hidden="true">網友開票所開張中・投下一票解鎖全台開票結果・前一天 19:00 截止投票・</span></div></div>
+  <div class="ticker" role="region" aria-label="網友預測統計（非官方公告）">
+    <span class="ticker-tag">網友預測・非官方</span>
+    <div class="ticker-track"><div class="ticker-inner" id="tickerInner"><span>網友預測進行中・送出預測解鎖全台統計・非官方公告・</span><span aria-hidden="true">網友預測進行中・送出預測解鎖全台統計・非官方公告・</span></div></div>
   </div>
 
   <!-- ===== 機率估算 ===== -->
@@ -219,7 +217,7 @@
         <div>
           <div class="eyebrow">MODEL ESTIMATE · 模型估算</div>
           <h2>颱風假機率計算器</h2>
-          <p>輸入氣象署預報的風力與雨量，依法規門檻與縣市歷史傾向估算。</p>
+          <p>輸入中央氣象署預報的風力與雨量，依法規門檻與縣市歷史傾向粗估，僅供參考。</p>
         </div>
       </div>
 
@@ -243,7 +241,7 @@
           </div>
 
           <div class="card">
-            <h3 class="card-title"><span class="step-num">2</span>風雨預測</h3>
+            <h3 class="card-title"><span class="step-num">2</span>輸入氣象署預報</h3>
             <div class="field-row">
               <div class="field">
                 <label for="wind">預測平均風力</label>
@@ -286,6 +284,7 @@
               <label for="disasterRisk">當地已有淹水／坍方等災情，或有致災之虞</label>
             </div>
             <p class="hint">法規規定：雨量達門檻，且「已致災或有致災之虞」才會停班停課。</p>
+            <p class="hint">風力、雨量請參考<a href="https://www.cwa.gov.tw/V8/C/P/Typhoon/TY_NEWS.html" target="_blank" rel="noopener">中央氣象署颱風消息</a>；本站不發布天氣預報，只依你輸入的數值估算。</p>
           </div>
 
           <button type="submit" class="btn btn-primary btn-block calc-submit">估算放假機率</button>
@@ -312,8 +311,8 @@
               <div class="checklist" id="checklist"></div>
               <p class="hist-line" id="histLine"></p>
               <div class="result-cta">
-                <p>模型這樣算，<b>你自己覺得呢？</b><br>投一票看全台網友怎麼押。</p>
-                <a class="btn btn-primary" href="#vote">🗳️ 去投票</a>
+                <p>模型這樣算，<b>你自己覺得呢？</b><br>猜猜看，再看全台網友怎麼想。</p>
+                <a class="btn btn-primary" href="#vote">🔮 去預測</a>
               </div>
             </div>
           </div>
@@ -322,16 +321,21 @@
     </div>
   </section>
 
-  <!-- ===== 網友開票所 ===== -->
+  <!-- ===== 網友預測 ===== -->
   <section class="section" id="vote">
     <div class="container">
       <div class="section-head">
         <span class="sec-num" aria-hidden="true">02</span>
         <div>
           <div class="eyebrow">CROWD FORECAST · 群眾預測</div>
-          <h2>網友開票所</h2>
-          <p>替你的縣市投下一票，前一天 19:00 截止投票，縣市公告後揭曉結果。</p>
+          <h2>網友預測</h2>
+          <p>猜猜你的縣市會不會放假，前一天 19:00 截止預測，縣市正式公告後對答案。</p>
         </div>
+      </div>
+
+      <div class="notice" role="note">
+        <b>⚠️ 這裡是網友預測，不是放假公告</b>
+        <p>以下數字是網友主觀猜測的統計，不代表任何縣市政府的決定。請勿把畫面截圖當成停班停課消息轉傳——散播災害相關不實訊息可能觸犯《災害防救法》與《社會秩序維護法》。是否停班停課，一律以<a href="https://www.dgpa.gov.tw/typh/daily/nds.html" target="_blank" rel="noopener">行政院人事行政總處</a>及各縣市政府公告為準。</p>
       </div>
 
       <div class="vote-toolbar">
@@ -347,15 +351,16 @@
         <div class="vote-side">
           <div class="card board-card">
             <div class="board-head">
-              <h3><span class="live-tag"><span class="pulse" aria-hidden="true"></span>LIVE</span>全台開票看板</h3>
-              <span class="board-total">總票數 <b class="num" id="totalVotes">0</b></span>
+              <h3>全台網友預測看板</h3>
+              <span class="board-total">參與人數 <b class="num" id="totalVotes">0</b></span>
             </div>
-            <div class="tile-map" id="tileMap" role="group" aria-label="各縣市開票結果，點選縣市查看詳情"></div>
+            <div class="tile-map" id="tileMap" role="group" aria-label="各縣市預測統計，點選縣市查看詳情"></div>
             <div class="legend">
               <span><i style="background:var(--yes)"></i>多數猜放假</span>
               <span><i style="background:var(--no)"></i>多數猜上班</span>
-              <span><i style="background:var(--stamp);border-radius:50%"></i>官方已公告放假</span>
+              <span><i style="background:var(--stamp);border-radius:50%"></i>官方已公告（休／班）</span>
             </div>
+            <p class="board-note">網友主觀預測統計・非政府公告・實際以<a href="https://www.dgpa.gov.tw/typh/daily/nds.html" target="_blank" rel="noopener">人事行政總處</a>公告為準</p>
           </div>
 
           <div class="card ranking">
@@ -371,7 +376,7 @@
                 <h3 id="detailName">—</h3>
                 <div class="sub" id="detailSub"></div>
               </div>
-              <select id="voteCounty" aria-label="切換投票縣市" style="width:auto;min-width:120px"></select>
+              <select id="voteCounty" aria-label="切換預測縣市" style="width:auto;min-width:120px"></select>
             </div>
 
             <div class="versus" id="versus"></div>
@@ -405,7 +410,7 @@
               <div class="medal" aria-hidden="true">🔭</div>
               <div>
                 <div class="title">見習觀測員</div>
-                <div class="stats">投票後等公告，猜中就能升級成颱風假預言家。</div>
+                <div class="stats">送出預測後等公告，猜中就能升級成颱風假預言家。</div>
               </div>
             </div>
           </div>
@@ -413,9 +418,9 @@
       </div>
 
       <div class="how-grid">
-        <div class="step"><b>① 投票</b><p>每人每天替一個縣市投一票，投出後不能更改。可預測明天或後天。</p></div>
-        <div class="step"><b>② 開票</b><p>投完票立即解鎖全台開票看板，票數即時更新；19:00 截止後所有人都能看。</p></div>
-        <div class="step"><b>③ 揭曉</b><p>縣市政府正式公告後蓋上「放假／照常」印章，猜中累積預言家戰績。</p></div>
+        <div class="step"><b>① 預測</b><p>每人每天替一個縣市預測一次，送出後不能更改。可預測明天或後天。</p></div>
+        <div class="step"><b>② 看統計</b><p>送出預測後解鎖全台網友預測看板，人數即時更新；19:00 截止後所有人都能看。</p></div>
+        <div class="step"><b>③ 對答案</b><p>縣市政府正式公告後，標上官方結果（資料來源：人事行政總處），猜中累積預言家戰績。</p></div>
       </div>
     </div>
   </section>
@@ -429,8 +434,12 @@
         <p>依《天然災害停止上班及上課作業辦法》，是否停止上班及上課由各直轄市、縣（市）首長決定並公告，中央氣象署只負責提供風力、雨量等預報資料作為判斷依據，並不會直接宣布停班停課。</p>
       </details>
       <details class="faq-item">
-        <summary>網友開票是怎麼玩的？</summary>
-        <p>每個人每天可以替自己的縣市投一票，預測隔天會不會放颱風假。投完票就能看到全台各縣市的即時開票結果，前一天晚上 7 點截止投票，等縣市政府正式公告後會蓋上「放假」或「照常」印章，猜中就會累積你的預言家戰績。投票結果只是網友意見的統計，和官方決定無關。</p>
+        <summary>網友預測是怎麼玩的？</summary>
+        <p>每個人每天可以替一個縣市預測一次，猜隔天會不會放颱風假。送出後就能看到全台網友的預測統計，前一天晚上 7 點截止預測，等縣市政府正式公告後會標上官方結果，猜中就會累積你的預言家戰績。這只是網友意見的統計，不是放假公告，也和官方決定無關。</p>
+      </details>
+      <details class="faq-item">
+        <summary>網友預測的結果可以當作放假依據嗎？</summary>
+        <p>不行。網友預測只是大家主觀猜測的統計，不是政府公告；本站的機率估算也只是依法規門檻做的粗估。是否停班停課，請以行政院人事行政總處「天然災害停止上班及上課情形」網頁與各縣市政府公告為準。也請不要把預測畫面截圖當成放假消息轉傳，散播災害相關不實訊息可能觸犯《災害防救法》與《社會秩序維護法》。</p>
       </details>
       <details class="faq-item">
         <summary>為什麼台北、新北、基隆常常一起放假？</summary>
@@ -459,7 +468,7 @@
         法規門檻依據：<a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=S0110022" target="_blank" rel="noopener">天然災害停止上班及上課作業辦法</a>第 4 條——風力達「平均 7 級以上或陣風 10 級以上」，雨量達「參考基準（平地約 350 毫米、山區約 200 毫米）且已致災或有致災之虞」。
         各縣市歷史傾向依據近 10 年公開統計的縣市颱風假機率（<a href="https://ibuyranking.blogspot.com/2024/10/typhoon-day.html" target="_blank" rel="noopener">資料來源</a>，非官方數據）。
       </p>
-      <p>本站估算與網友投票僅供參考娛樂，不代表任何官方立場；是否停班停課一律以<a href="https://www.dgpa.gov.tw/typh/daily/nds.html" target="_blank" rel="noopener">行政院人事行政總處</a>及各縣市政府公告為準。</p>
+      <p>本站估算與網友預測僅供參考娛樂，不代表任何官方立場；是否停班停課一律以<a href="https://www.dgpa.gov.tw/typh/daily/nds.html" target="_blank" rel="noopener">行政院人事行政總處</a>及各縣市政府公告為準。</p>
     </div>
     <div>
       <div class="footer-links">

@@ -4,7 +4,7 @@
   'use strict';
 
   // 近10年颱風假機率(%)，資料來源見 README。順序沿用舊版，舊版 localStorage 存的 index 才對得起來。
-  // row/col 是開票看板上的方格地圖位置。
+  // row/col 是預測看板上的方格地圖位置。
   const COUNTIES = [
     { code: 'PIF', name: '屏東縣', short: '屏東', pct: 87.5, hint: '含恆春半島', row: 9, col: 3 },
     { code: 'KHH', name: '高雄市', short: '高雄', pct: 84.4, row: 8, col: 3 },
@@ -70,7 +70,7 @@
   // 分享：手機優先用系統分享面板，桌機退回各平台連結
   function share(kind, text) {
     const url = siteUrl();
-    const msg = text || '🌀 明天放不放颱風假？算機率＋全台網友開票中！';
+    const msg = text || '🌀 明天放不放颱風假？算機率＋看全台網友怎麼預測！';
     if (kind === 'native' && navigator.share) {
       navigator.share({ title: document.title, text: msg, url }).catch(() => {});
       return;
@@ -86,7 +86,7 @@
     }
   }
 
-  // ---------- 縣市選擇（計算器與開票所共用） ----------
+  // ---------- 縣市選擇（計算器與網友預測共用） ----------
   const listeners = [];
   let currentCode = (function () {
     const saved = store.get('typhoon-county-code');
@@ -183,7 +183,7 @@
     return { pct: Math.round(raw), windMeetsLaw, gustMeetsLaw, rainMeetsLaw };
   }
 
-  // 每個縣市最近一次的估算結果，給開票所做「模型 vs 網友」對照
+  // 每個縣市最近一次的估算結果，給網友預測做「模型 vs 網友」對照
   const estimates = store.getJSON('typhoon-estimates', {});
 
   function calculate(e) {

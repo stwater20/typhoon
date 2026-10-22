@@ -115,14 +115,14 @@ input:focus-visible, summary:focus-visible {
 }
 ::selection { background: var(--accent); color: var(--accent-ink); }
 
-/* LIVE 標籤與脈衝點，看板與 hero 共用 */
+/* 「網友預測」標籤：刻意不用紅色 LIVE 新聞台樣式，避免被誤認為官方即時消息 */
 .live-tag {
   display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0;
-  font-family: var(--font-display); font-weight: 700; font-size: 0.78rem; letter-spacing: 0.14em;
-  background: var(--live); color: #fff; padding: 2px 9px 1px; border-radius: 4px; line-height: 1.5;
+  font-weight: 700; font-size: 0.76rem; letter-spacing: 0.04em;
+  background: var(--accent); color: var(--accent-ink); padding: 2px 9px; border-radius: 4px; line-height: 1.5;
 }
 .pulse {
-  width: 7px; height: 7px; border-radius: 50%; background: #fff;
+  width: 7px; height: 7px; border-radius: 50%; background: var(--accent-ink);
   animation: pulse 1.6s ease-out infinite;
 }
 @keyframes pulse {
@@ -213,10 +213,8 @@ input:focus-visible, summary:focus-visible {
 .radar .eye { fill: var(--radar-2); stroke: var(--cloud); stroke-width: 2; }
 .radar .spin { animation: spin 26s linear infinite reverse; }
 .radar .sweep { animation: spin 5s linear infinite; transform-origin: 200px 200px; }
-.radar .track path { fill: none; stroke: var(--signal); stroke-width: 2; stroke-dasharray: 5 6; }
-.radar .track circle { fill: var(--radar-2); stroke: var(--signal); stroke-width: 2; }
-.radar .track text, .radar .rd-label text { font-family: var(--font-display); font-size: 12px; letter-spacing: 0.08em; fill: #cfe8f5; opacity: 0.75; }
-.radar .rd-label text:last-child { font-size: 11px; }
+.radar .rd-label text { font-family: var(--font-display); font-size: 12px; letter-spacing: 0.08em; fill: #cfe8f5; opacity: 0.75; }
+.radar .rd-label text:last-child { font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.04em; }
 .radar .blips circle { fill: var(--signal); animation: blip 2.4s ease-out infinite; transform-box: fill-box; transform-origin: center; }
 .radar .blips circle:nth-child(2) { animation-delay: 0.6s; }
 .radar .blips circle:nth-child(3) { animation-delay: 1.2s; }
@@ -231,7 +229,7 @@ input:focus-visible, summary:focus-visible {
 }
 .ticker-tag {
   flex-shrink: 0; display: flex; align-items: center; padding: 0 14px;
-  background: var(--live); color: #fff; font-weight: 900; letter-spacing: 0.06em; position: relative; z-index: 1;
+  background: var(--surface-3); color: var(--text); font-weight: 700; font-size: 0.8rem; border-right: 1px solid var(--border); position: relative; z-index: 1;
 }
 .ticker-track { flex: 1; overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
 .ticker-inner { display: flex; width: max-content; animation: ticker 40s linear infinite; padding: 9px 0; }
@@ -444,6 +442,18 @@ select {
 }
 .tile .t-stamp.work { background: var(--faint); }
 @keyframes stampPop { from { transform: scale(2); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.board-note {
+  margin: 0; padding: 9px 16px; border-top: 1px dashed var(--border); text-align: center;
+  font-size: 0.74rem; color: var(--muted); background: var(--surface-2);
+}
+.board-note a { color: inherit; }
+.notice {
+  margin-bottom: 16px; padding: 12px 16px; border-radius: var(--radius);
+  border: 1px solid color-mix(in srgb, var(--warn) 45%, var(--border));
+  background: color-mix(in srgb, var(--warn) 8%, var(--surface));
+}
+.notice b { display: block; font-size: 0.92rem; color: var(--warn); margin-bottom: 2px; }
+.notice p { margin: 0; font-size: 0.82rem; color: var(--muted); }
 .legend { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px 14px; padding: 12px 16px 16px; font-size: 0.74rem; color: var(--muted); }
 .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
 
@@ -472,14 +482,15 @@ select {
   background: repeating-linear-gradient(-45deg, var(--surface-2) 0 10px, transparent 10px 20px);
 }
 .versus-hidden b { color: var(--text); font-family: var(--font-display); font-size: 1.3rem; }
-.stamp {
-  position: absolute; left: 50%; top: -6px; transform: translateX(-50%) rotate(-12deg); white-space: nowrap;
-  border: 3px double var(--stamp); color: var(--stamp); border-radius: 8px; padding: 2px 12px;
-  font-weight: 900; font-size: 1.2rem; letter-spacing: 0.12em; background: color-mix(in srgb, var(--surface) 75%, transparent);
-  animation: stampIn 0.45s cubic-bezier(.2,1.6,.4,1) both; pointer-events: none;
+.official {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px 10px;
+  margin-top: 12px; padding: 9px 12px; border-radius: 8px; font-weight: 700; font-size: 0.92rem;
+  border: 1px solid var(--stamp); color: var(--stamp); background: color-mix(in srgb, var(--stamp) 8%, transparent);
+  animation: fadeUp 0.35s ease both;
 }
-.stamp.work { border-color: var(--faint); color: var(--faint); }
-@keyframes stampIn { from { transform: translateX(-50%) rotate(-12deg) scale(2.2); opacity: 0; } to { transform: translateX(-50%) rotate(-12deg) scale(1); opacity: 1; } }
+.official.work { border-color: var(--border-strong); color: var(--text); background: var(--surface-2); }
+.official small { font-weight: 500; font-size: 0.74rem; color: var(--muted); }
+.official small a { color: inherit; }
 
 .compare { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
 .compare .box { background: var(--surface-2); padding: 10px 14px; }
@@ -505,7 +516,7 @@ select {
 .vote-btn.chosen.yes { border-color: var(--yes); background: var(--yes-soft); }
 .vote-btn.chosen.no { border-color: var(--no); background: var(--no-soft); }
 .vote-btn.chosen::after {
-  content: "已投"; position: absolute; top: 8px; right: 8px; font-size: 0.66rem; font-weight: 900;
+  content: "已選"; position: absolute; top: 8px; right: 8px; font-size: 0.66rem; font-weight: 900;
   color: var(--stamp); border: 2px solid var(--stamp); border-radius: 50%; width: 34px; height: 34px;
   display: grid; place-items: center; transform: rotate(-14deg);
 }

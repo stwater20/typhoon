@@ -1,7 +1,7 @@
 {
-  "name": "颱風假機率計算器＆網友開票所",
+  "name": "颱風假機率計算器＆網友預測",
   "short_name": "颱風假計算器",
-  "description": "依法規門檻與近10年各縣市歷史機率估算放颱風假的機率，並和全台網友一起投票預測、即時開票。",
+  "description": "依法規門檻與近10年各縣市歷史機率估算放颱風假的機率，並和全台網友一起預測、即時統計。",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -14,6 +14,6 @@
     { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
   ],
   "shortcuts": [
-    { "name": "網友開票所", "short_name": "開票所", "url": "./#vote" }
+    { "name": "網友預測", "short_name": "網友預測", "url": "./#vote" }
   ]
 }
