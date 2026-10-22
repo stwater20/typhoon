@@ -1,19 +1,29 @@
 {
-  "name": "颱風假機率計算器＆網友預測",
+  "name": "颱風假機率計算器",
   "short_name": "颱風假計算器",
-  "description": "依法規門檻與近10年各縣市歷史機率估算放颱風假的機率，並和全台網友一起預測、即時統計。",
+  "description": "輸入氣象署風雨預報，依法規門檻與近10年各縣市紀錄估算放颱風假的機率。",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#0a0f1c",
-  "theme_color": "#0a0f1c",
+  "background_color": "#e6f4ff",
+  "theme_color": "#e6f4ff",
   "lang": "zh-TW",
-  "categories": ["weather", "utilities", "entertainment"],
-  "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  "categories": [
+    "weather",
+    "utilities"
   ],
-  "shortcuts": [
-    { "name": "網友預測", "short_name": "網友預測", "url": "./#vote" }
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
   ]
 }

@@ -1,33 +1,32 @@
 /* 颱風假機率計算器：縣市資料、估算模型、介面互動。
- * 透過 window.Typhoon 提供給 vote.js 共用。 */
+ */
 (function () {
   'use strict';
 
   // 近10年颱風假機率(%)，資料來源見 README。順序沿用舊版，舊版 localStorage 存的 index 才對得起來。
-  // row/col 是預測看板上的方格地圖位置。
   const COUNTIES = [
-    { code: 'PIF', name: '屏東縣', short: '屏東', pct: 87.5, hint: '含恆春半島', row: 9, col: 3 },
-    { code: 'KHH', name: '高雄市', short: '高雄', pct: 84.4, row: 8, col: 3 },
-    { code: 'TNN', name: '台南市', short: '台南', pct: 75.0, row: 8, col: 2 },
-    { code: 'HUA', name: '花蓮縣', short: '花蓮', pct: 71.9, row: 4, col: 4 },
-    { code: 'CYQ', name: '嘉義縣', short: '嘉義縣', pct: 65.6, row: 6, col: 3 },
-    { code: 'PEN', name: '澎湖縣', short: '澎湖', pct: 62.5, row: 6, col: 1 },
-    { code: 'TTT', name: '台東縣', short: '台東', pct: 62.5, row: 7, col: 4 },
-    { code: 'CYI', name: '嘉義市', short: '嘉義市', pct: 59.4, row: 7, col: 2 },
-    { code: 'ILA', name: '宜蘭縣', short: '宜蘭', pct: 56.3, row: 2, col: 4 },
-    { code: 'YUN', name: '雲林縣', short: '雲林', pct: 56.3, row: 6, col: 2 },
-    { code: 'NAN', name: '南投縣', short: '南投', pct: 50.0, row: 5, col: 3 },
-    { code: 'NWT', name: '新北市', short: '新北', pct: 46.9, row: 2, col: 3 },
-    { code: 'LIE', name: '連江縣', short: '連江', pct: 46.9, hint: '馬祖', row: 1, col: 1 },
-    { code: 'TPE', name: '台北市', short: '台北', pct: 43.8, row: 1, col: 3 },
-    { code: 'KEE', name: '基隆市', short: '基隆', pct: 43.8, row: 1, col: 4 },
-    { code: 'CHA', name: '彰化縣', short: '彰化', pct: 43.8, row: 5, col: 2 },
-    { code: 'TXG', name: '台中市', short: '台中', pct: 43.8, row: 4, col: 3 },
-    { code: 'HSQ', name: '新竹縣', short: '新竹縣', pct: 43.8, row: 3, col: 3 },
-    { code: 'KIN', name: '金門縣', short: '金門', pct: 43.8, row: 3, col: 1 },
-    { code: 'TAO', name: '桃園市', short: '桃園', pct: 40.6, row: 2, col: 2 },
-    { code: 'HSZ', name: '新竹市', short: '新竹市', pct: 40.6, row: 3, col: 2 },
-    { code: 'MIA', name: '苗栗縣', short: '苗栗', pct: 40.6, row: 4, col: 2 },
+    { code: 'PIF', name: '屏東縣', pct: 87.5, hint: '含恆春半島' },
+    { code: 'KHH', name: '高雄市', pct: 84.4 },
+    { code: 'TNN', name: '台南市', pct: 75.0 },
+    { code: 'HUA', name: '花蓮縣', pct: 71.9 },
+    { code: 'CYQ', name: '嘉義縣', pct: 65.6 },
+    { code: 'PEN', name: '澎湖縣', pct: 62.5 },
+    { code: 'TTT', name: '台東縣', pct: 62.5 },
+    { code: 'CYI', name: '嘉義市', pct: 59.4 },
+    { code: 'ILA', name: '宜蘭縣', pct: 56.3 },
+    { code: 'YUN', name: '雲林縣', pct: 56.3 },
+    { code: 'NAN', name: '南投縣', pct: 50.0 },
+    { code: 'NWT', name: '新北市', pct: 46.9 },
+    { code: 'LIE', name: '連江縣', pct: 46.9, hint: '馬祖' },
+    { code: 'TPE', name: '台北市', pct: 43.8 },
+    { code: 'KEE', name: '基隆市', pct: 43.8 },
+    { code: 'CHA', name: '彰化縣', pct: 43.8 },
+    { code: 'TXG', name: '台中市', pct: 43.8 },
+    { code: 'HSQ', name: '新竹縣', pct: 43.8 },
+    { code: 'KIN', name: '金門縣', pct: 43.8 },
+    { code: 'TAO', name: '桃園市', pct: 40.6 },
+    { code: 'HSZ', name: '新竹市', pct: 40.6 },
+    { code: 'MIA', name: '苗栗縣', pct: 40.6 },
   ];
   const AVG_PCT = COUNTIES.reduce((s, c) => s + c.pct, 0) / COUNTIES.length;
   const byCode = Object.fromEntries(COUNTIES.map((c) => [c.code, c]));
@@ -36,10 +35,6 @@
   const store = {
     get(key) { try { return localStorage.getItem(key); } catch (e) { return null; } },
     set(key, val) { try { localStorage.setItem(key, val); } catch (e) { /* 私密模式等 */ } },
-    getJSON(key, fallback) {
-      try { const v = JSON.parse(localStorage.getItem(key)); return v == null ? fallback : v; } catch (e) { return fallback; }
-    },
-    setJSON(key, val) { this.set(key, JSON.stringify(val)); },
   };
   const $ = (id) => document.getElementById(id);
 
@@ -87,7 +82,6 @@
   }
 
   // ---------- 縣市選擇（計算器與網友預測共用） ----------
-  const listeners = [];
   let currentCode = (function () {
     const saved = store.get('typhoon-county-code');
     if (saved && byCode[saved]) return saved;
@@ -96,13 +90,12 @@
     return 'NWT';
   })();
 
-  function setCounty(code, source) {
-    if (!byCode[code] || code === currentCode && source !== 'init') return;
+  function setCounty(code) {
+    if (!byCode[code] || code === currentCode) return;
     currentCode = code;
     store.set('typhoon-county-code', code);
     $('county').value = code;
     updateCountyBadge();
-    listeners.forEach((fn) => fn(code, source));
   }
 
   function fillCountySelect(sel) {
@@ -118,6 +111,8 @@
   function updateCountyBadge() {
     const c = byCode[currentCode];
     $('countyBadge').innerHTML = `近10年颱風假機率：<b>${c.pct}%</b>（全國平均 ${AVG_PCT.toFixed(1)}%，歷史統計參考）`;
+    $('heroCounty').textContent = c.name;
+    $('heroPct').textContent = `${c.pct}%`;
   }
 
   // ---------- 定位 ----------
@@ -148,7 +143,7 @@
         const addr = data.address || {};
         const code = findCountyCode([addr.county, addr.city, addr.state, addr.town, addr.city_district, data.display_name]);
         if (code) {
-          setCounty(code, 'locate');
+          setCounty(code);
           status.textContent = `✅ 已定位到：${byCode[code].name}`;
         } else {
           status.textContent = '⚠️ 定位成功，但無法對應到台灣縣市，請手動選擇。';
@@ -183,9 +178,6 @@
     return { pct: Math.round(raw), windMeetsLaw, gustMeetsLaw, rainMeetsLaw };
   }
 
-  // 每個縣市最近一次的估算結果，給網友預測做「模型 vs 網友」對照
-  const estimates = store.getJSON('typhoon-estimates', {});
-
   function calculate(e) {
     if (e) e.preventDefault();
     const dateInput = $('date').value;
@@ -201,7 +193,7 @@
     const pct = r.pct;
     const county = byCode[currentCode];
 
-    const color = pct >= 70 ? 'var(--safe)' : pct >= 40 ? 'var(--warn)' : 'var(--danger)';
+    const color = pct >= 70 ? 'var(--good)' : pct >= 40 ? 'var(--mid)' : 'var(--low)';
     $('percent').textContent = pct + '%';
     $('percent').style.color = color;
     const gauge = $('gaugeValue');
@@ -248,19 +240,10 @@
     $('holidayNote').classList.toggle('show', isWeekend);
     $('result').classList.add('show');
 
-    estimates[currentCode] = { pct, date: dateInput, at: Date.now() };
-    store.setJSON('typhoon-estimates', estimates);
-    document.dispatchEvent(new CustomEvent('typhoon:estimate', { detail: { code: currentCode, pct } }));
 
     if (window.matchMedia('(max-width: 959px)').matches) {
       $('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  }
-
-  function getEstimate(code) {
-    const e = estimates[code];
-    // 估算超過 2 天就不拿來對照，避免拿舊颱風的數字
-    return e && Date.now() - e.at < 2 * 86400e3 ? e.pct : null;
   }
 
   // ---------- 主題 ----------
@@ -268,14 +251,14 @@
     document.documentElement.setAttribute('data-theme', theme);
     $('themeBtn').textContent = theme === 'light' ? '☀️ 淺色' : '🌙 深色';
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', theme === 'light' ? '#f4f0e7' : '#070b14');
+    if (meta) meta.setAttribute('content', theme === 'light' ? '#e6f4ff' : '#0b1220');
     store.set('typhoon-theme', theme);
   }
 
   // ---------- 初始化 ----------
   function init() {
     fillCountySelect($('county'));
-    $('county').addEventListener('change', (e) => setCounty(e.target.value, 'calc'));
+    $('county').addEventListener('change', (e) => setCounty(e.target.value));
     updateCountyBadge();
     $('date').value = twDate(1);
     $('locateBtn').addEventListener('click', locateMe);
@@ -283,20 +266,13 @@
     $('themeBtn').addEventListener('click', () => {
       applyTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
     });
-    applyTheme(document.documentElement.getAttribute('data-theme') || 'dark');
+    applyTheme(document.documentElement.getAttribute('data-theme') || 'light');
     document.querySelectorAll('[data-share]').forEach((btn) => {
       btn.addEventListener('click', () => share(btn.dataset.share));
     });
     $('year').textContent = String(new Date().getFullYear());
   }
 
-  window.Typhoon = {
-    COUNTIES, AVG_PCT, byCode, store, twDate, toast, share, copyText, siteUrl,
-    estimate, getEstimate, fillCountySelect,
-    getCounty: () => currentCode,
-    setCounty,
-    onCountyChange: (fn) => listeners.push(fn),
-  };
 
   init();
 })();

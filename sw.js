@@ -1,7 +1,7 @@
-const CACHE_NAME = 'typhoon-calc-v4';
+const CACHE_NAME = 'typhoon-calc-v5';
 const APP_SHELL = [
   './', './index.html', './privacy.html', './manifest.json', './icon-192.png', './icon-512.png',
-  './assets/css/style.css', './assets/js/app.js', './assets/js/vote.js', './assets/js/config.js',
+  './assets/css/style.css', './assets/js/app.js',
 ];
 
 self.addEventListener('install', (event) => {
@@ -35,7 +35,7 @@ self.addEventListener('fetch', (event) => {
   if (req.method !== 'GET') return;
   let url;
   try { url = new URL(req.url); } catch (e) { return; }
-  if (url.origin !== self.location.origin) return; // 廣告、Firebase、Nominatim、GitHub 按鈕都直接走網路
+  if (url.origin !== self.location.origin) return; // 廣告、字型、Nominatim、GitHub 按鈕都直接走網路
 
   // 頁面與程式碼走網路優先，確保改版後馬上生效；離線才用快取
   if (req.mode === 'navigate' || /\.(html|js|css)$/.test(url.pathname)) {
