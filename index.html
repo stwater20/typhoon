@@ -225,6 +225,7 @@
           </div>
 
           <button type="submit" class="btn btn-primary btn-block calc-submit">估算放假機率</button>
+          <button type="button" class="btn btn-wish btn-block" id="wishBtn">🙏 我覺得<span id="wishChief">市長</span>想放</button>
         </form>
 
         <div class="result-col">
@@ -234,13 +235,14 @@
               <p>填好左邊的風雨條件後按「估算放假機率」<br>結果會顯示在這裡。</p>
             </div>
             <div class="result-body">
+              <p class="wish-tag" id="wishTag" hidden>許願模式・不是估算</p>
               <p class="msg-top" id="msgTop"></p>
               <div class="gauge">
                 <svg viewBox="0 0 120 120" aria-hidden="true">
                   <circle class="track" cx="60" cy="60" r="52" fill="none" stroke-width="10"/>
                   <circle class="value" id="gaugeValue" cx="60" cy="60" r="52" fill="none" stroke-width="10" stroke-linecap="round" stroke-dasharray="326.73" stroke-dashoffset="326.73"/>
                 </svg>
-                <div class="gauge-label"><div><span class="pct num" id="percent">0%</span><small>模型估算放假機率</small></div></div>
+                <div class="gauge-label"><div><span class="pct num" id="percent">0%</span><small id="gaugeCaption">模型估算放假機率</small></div></div>
               </div>
               <p class="msg-bottom" id="msgBottom"></p>
               <div class="holiday-note" id="holidayNote">🎉 你選的日子本來就是週末，反正都放假！</div>

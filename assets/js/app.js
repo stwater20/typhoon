@@ -113,6 +113,7 @@
     $('countyBadge').innerHTML = `近10年颱風假機率：<b>${c.pct}%</b>（全國平均 ${AVG_PCT.toFixed(1)}%，歷史統計參考）`;
     $('heroCounty').textContent = c.name;
     $('heroPct').textContent = `${c.pct}%`;
+    $('wishChief').textContent = chiefOf(c);
   }
 
   // ---------- 定位 ----------
@@ -178,7 +179,11 @@
     return { pct: Math.round(raw), windMeetsLaw, gustMeetsLaw, rainMeetsLaw };
   }
 
-  function calculate(e) {
+  // 首長稱謂：直轄市與市是市長，其餘是縣長
+  const chiefOf = (county) => (county.name.endsWith('市') ? '市長' : '縣長');
+
+  // wish＝「我覺得市長想放」：直接 100%，但標明是許願，檢核清單和實際估算照常顯示
+  function calculate(e, wish) {
     if (e) e.preventDefault();
     const dateInput = $('date').value;
     const input = {
@@ -190,10 +195,13 @@
       disasterRisk: $('disasterRisk').checked,
     };
     const r = estimate(input);
-    const pct = r.pct;
+    const pct = wish ? 100 : r.pct;
     const county = byCode[currentCode];
+    $('result').classList.toggle('wish', !!wish);
+    $('wishTag').hidden = !wish;
+    $('gaugeCaption').textContent = wish ? '許願放假機率' : '模型估算放假機率';
 
-    const color = pct >= 70 ? 'var(--good)' : pct >= 40 ? 'var(--mid)' : 'var(--low)';
+    const color = wish ? 'var(--wish)' : pct >= 70 ? 'var(--good)' : pct >= 40 ? 'var(--mid)' : 'var(--low)';
     $('percent').textContent = pct + '%';
     $('percent').style.color = color;
     const gauge = $('gaugeValue');
@@ -202,7 +210,10 @@
     gauge.style.strokeDashoffset = String(circ * (1 - pct / 100));
 
     let topMsg, bottomMsg;
-    if (pct >= 85) {
+    if (wish) {
+      topMsg = `${chiefOf(county)}說放就放，風雨什麼的不重要`;
+      bottomMsg = '這是許願不是估算 🙏 真正放不放，還是要看今晚的官方公告';
+    } else if (pct >= 85) {
       topMsg = '已明顯達到法規門檻，條件相當夠力';
       bottomMsg = '棉被枕頭準備好，明天大概率可以躺平 🛌';
     } else if (pct >= 60) {
@@ -229,8 +240,9 @@
         <span>${it.label}</span>
       </div>`).join('');
 
-    $('histLine').textContent =
-      `參考：${county.name}近10年颱風假機率為 ${county.pct}%（全國平均約 ${AVG_PCT.toFixed(1)}%），本次估算已將此歷史傾向納入計算。`;
+    $('histLine').textContent = wish
+      ? `冷靜一下：依你輸入的風雨條件，模型實際估算是 ${r.pct}%（${county.name}近10年颱風假機率 ${county.pct}%）。`
+      : `參考：${county.name}近10年颱風假機率為 ${county.pct}%（全國平均約 ${AVG_PCT.toFixed(1)}%），本次估算已將此歷史傾向納入計算。`;
 
     let isWeekend = false;
     if (dateInput) {
@@ -263,6 +275,7 @@
     $('date').value = twDate(1);
     $('locateBtn').addEventListener('click', locateMe);
     $('calcForm').addEventListener('submit', calculate);
+    $('wishBtn').addEventListener('click', () => calculate(null, true));
     $('themeBtn').addEventListener('click', () => {
       applyTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
     });
