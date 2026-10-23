@@ -1,5 +1,7 @@
 # 颱風假機率計算器 🌀
 
+由 [Sectools.tw](https://sectools.tw/) 製作與維護。
+
 🔗 **網站：[https://typhoon.sectools.tw/](https://typhoon.sectools.tw/)**
 
 純前端靜態網站（GitHub Pages 即可部署，沒有後端、不需要任何帳號或資料庫）。輸入中央氣象署預報的風力、陣風、雨量，估算隔天放颱風假的機率。娛樂參考用，正式結果一律以行政院人事行政總處及各縣市政府公告為準。

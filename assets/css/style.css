@@ -290,6 +290,9 @@ select {
 .site-footer { margin-top: 56px; padding: 36px 0 48px; font-size: 0.82rem; color: var(--muted); border-top: 1px solid var(--border); }
 .footer-grid { display: grid; gap: 24px; grid-template-columns: 1fr; }
 @media (min-width: 760px) { .footer-grid { grid-template-columns: 1.6fr 1fr; } }
+.maker { margin: 0 0 12px; font-size: 0.95rem; color: var(--text); }
+.maker a { color: var(--primary); text-decoration: none; }
+.maker a:hover { text-decoration: underline; }
 .footer-links { display: flex; flex-wrap: wrap; gap: 8px 18px; }
 .footer-links a { color: var(--muted); }
 .footer-links a:hover { color: var(--text); }

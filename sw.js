@@ -1,4 +1,4 @@
-const CACHE_NAME = 'typhoon-calc-v8';
+const CACHE_NAME = 'typhoon-calc-v9';
 const APP_SHELL = [
   './', './index.html', './privacy.html', './manifest.json', './icon-192.png', './icon-512.png',
   './assets/css/style.css', './assets/js/app.js',
