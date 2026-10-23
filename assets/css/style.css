@@ -310,6 +310,11 @@ select {
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+/* ===== Emoji 雨 ===== */
+.emoji-rain { position: fixed; inset: 0; pointer-events: none; z-index: 90; overflow: hidden; }
+.emoji-rain span { position: absolute; top: -40px; animation: emojiFall linear forwards; }
+@keyframes emojiFall { to { transform: translateY(110vh) rotate(260deg); } }
+
 /* ===== Legal pages ===== */
 .prose { max-width: 760px; margin: 0 auto; padding: 40px 20px 20px; }
 .prose h1 { font-size: 1.9rem; font-weight: 900; }

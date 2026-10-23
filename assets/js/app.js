@@ -179,6 +179,45 @@
     return { pct: Math.round(raw), windMeetsLaw, gustMeetsLaw, rainMeetsLaw };
   }
 
+  // 結果下方的俏皮話，每次隨機挑一句
+  const QUIPS = {
+    high: ['棉被枕頭準備好，明天大概率可以躺平 🛌', '可以開始想明天要追哪部劇了 🍿', '泡麵、零食、行動電源，颱風假三寶備好了嗎？', '老闆的訊息可以先已讀了（誤）'],
+    mid: ['建議睡前再 check 一次氣象署跟縣市政府粉專公告', '五五波，今晚 10 點前請保持手機有電 🔋', '可以先把鬧鐘設好，再偷偷期待一下', '這種時候最適合一直重新整理人事總處網頁'],
+    low: ['鬧鐘還是先設一下，別太早開香檳', '雨傘記得帶，假可能放不到 ☔', '心裡可以期待，但報告還是要寫', '先別急著跟同事說明天見不到了'],
+    none: ['大概率要正常上班上課，早點睡吧', '颱風可能只是路過打個招呼 👋', '明天的你還是要準時打卡喔', '今晚的放假夢，留到下次颱風再做'],
+  };
+  const pick = (list) => list[Math.floor(Math.random() * list.length)];
+
+  // 連按「我覺得市長想放」會越講越誇張
+  let wishCount = parseInt(store.get('typhoon-wish-count'), 10) || 0;
+  function wishLine(n, chief) {
+    if (n === 1) return '這是許願不是估算 🙏 真正放不放，還是要看今晚的官方公告';
+    if (n < 5) return `第 ${n} 次許願，${chief}好像有點感應了 👀（但還是要看官方公告）`;
+    if (n < 10) return `你已經許願 ${n} 次了，${chief}應該聽到了吧 📣`;
+    if (n < 30) return `許願 ${n} 次！這份誠意足以感動天地，但感動不了人事總處 😂`;
+    return `許願 ${n} 次的你，就是本站最虔誠的颱風假信徒 🙇`;
+  }
+
+  // 撒一陣 emoji，兩三秒後自己消失；使用者設定減少動態效果時不播
+  function emojiRain(emojis) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (document.querySelector('.emoji-rain')) return; // 連按時不疊加
+    const wrap = document.createElement('div');
+    wrap.className = 'emoji-rain';
+    wrap.setAttribute('aria-hidden', 'true');
+    for (let i = 0; i < 26; i++) {
+      const el = document.createElement('span');
+      el.textContent = pick(emojis);
+      el.style.left = `${Math.random() * 100}%`;
+      el.style.fontSize = `${18 + Math.random() * 18}px`;
+      el.style.animationDuration = `${1.8 + Math.random() * 1.4}s`;
+      el.style.animationDelay = `${Math.random() * 0.6}s`;
+      wrap.appendChild(el);
+    }
+    document.body.appendChild(wrap);
+    setTimeout(() => wrap.remove(), 3800);
+  }
+
   // 首長稱謂：直轄市與市是市長，其餘是縣長
   const chiefOf = (county) => (county.name.endsWith('市') ? '市長' : '縣長');
 
@@ -211,20 +250,23 @@
 
     let topMsg, bottomMsg;
     if (wish) {
+      const n = wishCount + 1;
+      wishCount = n;
+      store.set('typhoon-wish-count', String(n));
       topMsg = `${chiefOf(county)}說放就放，風雨什麼的不重要`;
-      bottomMsg = '這是許願不是估算 🙏 真正放不放，還是要看今晚的官方公告';
+      bottomMsg = wishLine(n, chiefOf(county));
     } else if (pct >= 85) {
       topMsg = '已明顯達到法規門檻，條件相當夠力';
-      bottomMsg = '棉被枕頭準備好，明天大概率可以躺平 🛌';
+      bottomMsg = pick(QUIPS.high);
     } else if (pct >= 60) {
       topMsg = '已達或接近法規門檻，但地方仍有裁量空間';
-      bottomMsg = '建議睡前再 check 一次氣象署跟縣市政府粉專公告';
+      bottomMsg = pick(QUIPS.mid);
     } else if (pct >= 35) {
       topMsg = '尚未明顯達標，機率偏低';
-      bottomMsg = '鬧鐘還是先設一下，別太早開香檳';
+      bottomMsg = pick(QUIPS.low);
     } else {
       topMsg = '目前條件離法規門檻還有距離';
-      bottomMsg = '大概率要正常上班上課，早點睡吧';
+      bottomMsg = pick(QUIPS.none);
     }
     $('msgTop').textContent = `${county.name}｜${topMsg}`;
     $('msgBottom').textContent = bottomMsg;
@@ -251,6 +293,7 @@
     }
     $('holidayNote').classList.toggle('show', isWeekend);
     $('result').classList.add('show');
+    if (wish || pct >= 85) emojiRain(wish ? ['🙏', '🏖️', '🎉', '🛌'] : ['🏖️', '🛌', '🍿', '🎮']);
 
 
     if (window.matchMedia('(max-width: 959px)').matches) {
