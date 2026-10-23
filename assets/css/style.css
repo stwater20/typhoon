@@ -21,8 +21,8 @@
   --good: #16a34a;
   --mid: #f59e0b;
   --low: #94a3b8;
-  --wish: #ec4899;
-  --wish-soft: #fdeaf3;
+  --wish: #ea7a0c;
+  --wish-soft: #fff1e0;
   --cloud: #ffffff;
   --shadow-sm: 0 1px 2px rgba(15, 30, 51, 0.05);
   --shadow: 0 2px 6px rgba(15, 30, 51, 0.04), 0 12px 32px rgba(15, 30, 51, 0.07);
@@ -48,8 +48,8 @@
   --good: #4ade80;
   --mid: #fbbf24;
   --low: #64748b;
-  --wish: #f472b6;
-  --wish-soft: rgba(244, 114, 182, 0.14);
+  --wish: #fb923c;
+  --wish-soft: rgba(251, 146, 60, 0.14);
   --cloud: rgba(255, 255, 255, 0.08);
   --shadow-sm: none;
   --shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
@@ -232,6 +232,19 @@ select {
   width: fit-content; margin: 0 auto 6px; padding: 3px 12px; border-radius: 999px;
   background: var(--wish-soft); color: var(--wish); font-size: 0.8rem; font-weight: 700;
 }
+.promo {
+  display: flex; align-items: center; gap: 16px; padding: 20px 24px; border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--primary-soft), var(--surface)); color: var(--text); text-decoration: none;
+  box-shadow: var(--shadow); border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  transition: transform 0.15s ease;
+}
+.promo:hover { transform: translateY(-2px); }
+.promo-icon { font-size: 2rem; flex-shrink: 0; }
+.promo-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.promo-text b { font-size: 1.05rem; }
+.promo-text span { font-size: 0.88rem; color: var(--muted); }
+.promo-cta { flex-shrink: 0; font-weight: 700; color: var(--primary); white-space: nowrap; }
+@media (max-width: 560px) { .promo { flex-wrap: wrap; } .promo-cta { width: 100%; } }
 .calc-submit { margin-top: 16px; min-height: 56px; font-size: 1.08rem; border-radius: 16px; }
 
 .result-empty { text-align: center; padding: 40px 12px; color: var(--muted); }
@@ -296,6 +309,11 @@ select {
   transition: opacity 0.25s ease, transform 0.25s ease; z-index: 100; max-width: calc(100% - 32px); text-align: center;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ===== Emoji 雨 ===== */
+.emoji-rain { position: fixed; inset: 0; pointer-events: none; z-index: 90; overflow: hidden; }
+.emoji-rain span { position: absolute; top: -40px; animation: emojiFall linear forwards; }
+@keyframes emojiFall { to { transform: translateY(110vh) rotate(260deg); } }
 
 /* ===== Legal pages ===== */
 .prose { max-width: 760px; margin: 0 auto; padding: 40px 20px 20px; }
