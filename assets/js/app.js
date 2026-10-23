@@ -113,7 +113,6 @@
     $('countyBadge').innerHTML = `近10年颱風假機率：<b>${c.pct}%</b>（全國平均 ${AVG_PCT.toFixed(1)}%，歷史統計參考）`;
     $('heroCounty').textContent = c.name;
     $('heroPct').textContent = `${c.pct}%`;
-    $('wishChief').textContent = chiefOf(c);
   }
 
   // ---------- 定位 ----------
@@ -179,10 +178,7 @@
     return { pct: Math.round(raw), windMeetsLaw, gustMeetsLaw, rainMeetsLaw };
   }
 
-  // 首長稱謂：直轄市與市是市長，其餘是縣長
-  const chiefOf = (county) => (county.name.endsWith('市') ? '市長' : '縣長');
-
-  // wish＝「我覺得市長想放」：直接 100%，但標明是許願，檢核清單和實際估算照常顯示
+  // wish＝「拜託讓我放假」：直接 100%，但標明是許願，檢核清單和實際估算照常顯示
   function calculate(e, wish) {
     if (e) e.preventDefault();
     const dateInput = $('date').value;
@@ -211,7 +207,7 @@
 
     let topMsg, bottomMsg;
     if (wish) {
-      topMsg = `${chiefOf(county)}說放就放，風雨什麼的不重要`;
+      topMsg = '願望已送出，明天放假吧！';
       bottomMsg = '這是許願不是估算 🙏 真正放不放，還是要看今晚的官方公告';
     } else if (pct >= 85) {
       topMsg = '已明顯達到法規門檻，條件相當夠力';
