@@ -1,46 +1,56 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant" data-theme="light">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>颱風假機率計算器｜依法規門檻＋近10年縣市數據估算</title>
-<meta name="description" content="輸入預測風力、陣風、雨量，依《天然災害停止上班及上課作業辦法》門檻與近10年各縣市颱風假歷史機率，估算隔天放假機率。支援定位自動選縣市，純前端小工具。">
-<meta name="keywords" content="颱風假,停班停課,颱風假機率,天然災害停止上班及上課作業辦法,放假機率計算器,台灣颱風">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>颱風假機率計算器｜明天會放颱風假嗎？</title>
+<meta name="description" content="明天會放颱風假嗎？依《天然災害停止上班及上課作業辦法》門檻與近10年各縣市停班紀錄估算放假機率。輸入氣象署風雨預報即可試算，支援定位自動選縣市。">
+<meta name="keywords" content="颱風假,停班停課,颱風假機率,明天放假嗎,颱風假預測,天然災害停止上班及上課作業辦法,台灣颱風">
 <meta name="author" content="stwater20">
-<link rel="canonical" href="https://stwater20.github.io/typhoon/">
+<link rel="canonical" href="https://typhoon.sectools.tw/">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌀</text></svg>">
 
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#0b1120">
+<meta name="theme-color" content="#e6f4ff">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="颱風假計算器">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="颱風假機率計算器">
-<meta property="og:title" content="颱風假機率計算器｜依法規門檻＋近10年縣市數據估算">
-<meta property="og:description" content="輸入預測風力、陣風、雨量，依法規門檻與近10年各縣市歷史機率，估算隔天放假機率。">
-<meta property="og:url" content="https://stwater20.github.io/typhoon/">
-<meta property="og:image" content="https://stwater20.github.io/typhoon/og-image.png">
+<meta property="og:title" content="明天會放颱風假嗎？颱風假機率計算器">
+<meta property="og:description" content="輸入氣象署風雨預報，依法規門檻與近10年縣市紀錄估算放假機率。">
+<meta property="og:url" content="https://typhoon.sectools.tw/">
+<meta property="og:image" content="https://typhoon.sectools.tw/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="zh_TW">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="颱風假機率計算器">
-<meta name="twitter:description" content="輸入預測風力、陣風、雨量，估算隔天放假機率，含近10年縣市歷史數據對照。">
-<meta name="twitter:image" content="https://stwater20.github.io/typhoon/og-image.png">
+<meta name="twitter:title" content="明天會放颱風假嗎？颱風假機率計算器">
+<meta name="twitter:description" content="輸入氣象署風雨預報，估算明天放颱風假的機率。">
+<meta name="twitter:image" content="https://typhoon.sectools.tw/og-image.png">
+
+<script>
+  // 先套用主題，避免載入時閃一下
+  (function () {
+    try {
+      document.documentElement.setAttribute('data-theme', localStorage.getItem('typhoon-theme') === 'dark' ? 'dark' : 'light');
+    } catch (e) {}
+  })();
+</script>
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "颱風假機率計算器",
-  "url": "https://stwater20.github.io/typhoon/",
-  "description": "依《天然災害停止上班及上課作業辦法》門檻與近10年各縣市颱風假歷史機率，估算隔天放假機率的純前端小工具。",
+  "url": "https://typhoon.sectools.tw/",
+  "description": "依《天然災害停止上班及上課作業辦法》門檻與近10年各縣市颱風假歷史機率估算放假機率。",
   "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Any",
+  "inLanguage": "zh-TW",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" }
 }
 </script>
@@ -53,6 +63,11 @@
       "@type": "Question",
       "name": "颱風假是誰決定的？",
       "acceptedAnswer": { "@type": "Answer", "text": "依《天然災害停止上班及上課作業辦法》，是否停止上班及上課由各直轄市、縣（市）首長決定並公告，中央氣象署只負責提供風力、雨量等預報資料作為判斷依據，並不會直接宣布停班停課。" }
+    },
+    {
+      "@type": "Question",
+      "name": "這個估算結果可以當作放假依據嗎？",
+      "acceptedAnswer": { "@type": "Answer", "text": "不行。本站只是依法規門檻和歷史紀錄做的粗估，風雨數值也是你自己輸入的氣象署預報。是否停班停課，請以行政院人事行政總處「天然災害停止上班及上課情形」網頁與各縣市政府公告為準，也請不要把估算結果當成放假消息轉傳。" }
     },
     {
       "@type": "Question",
@@ -78,772 +93,242 @@
 }
 </script>
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1946121873919285"
-     crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="assets/css/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1946121873919285" crossorigin="anonymous"></script>
 <script async defer src="https://buttons.github.io/buttons.js"></script>
-<style>
-  :root {
-    --bg-grad-1: #0b1120;
-    --bg-grad-2: #17304d;
-    --card: #1b2537;
-    --card-2: #141d2c;
-    --card-border: #2b3a52;
-    --input-bg: #0f172a;
-    --accent: #38bdf8;
-    --accent-soft: rgba(56,189,248,0.15);
-    --accent2: #fbbf24;
-    --text: #e7edf5;
-    --muted: #93a2b8;
-    --danger: #f87171;
-    --safe: #4ade80;
-    --track-bg: #0f172a;
-    --chip-bg: #0f172a;
-  }
-  :root[data-theme="light"] {
-    --bg-grad-1: #eef4fb;
-    --bg-grad-2: #dbe9fb;
-    --card: #ffffff;
-    --card-2: #f6f9fc;
-    --card-border: #dbe4f0;
-    --input-bg: #f4f7fb;
-    --accent: #0284c7;
-    --accent-soft: rgba(2,132,199,0.1);
-    --accent2: #b45309;
-    --text: #1c2939;
-    --muted: #5b6b82;
-    --danger: #dc2626;
-    --safe: #15803d;
-    --track-bg: #e5edf7;
-    --chip-bg: #eef4fb;
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    min-height: 100vh;
-    background: linear-gradient(160deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
-    font-family: "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
-    color: var(--text);
-    display: flex;
-    justify-content: center;
-    padding: 28px 16px 60px;
-    transition: background 0.3s ease, color 0.3s ease;
-  }
-  .wrap { width: 100%; max-width: 540px; }
-  .top-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 4px;
-    min-height: 32px;
-  }
-  .share-row {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 14px;
-  }
-  .share-btn {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    border: 1px solid var(--card-border);
-    background: var(--card);
-    color: var(--text);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    padding: 0;
-  }
-  .share-btn svg { width: 18px; height: 18px; fill: currentColor; }
-  .share-status {
-    font-size: 0.72rem;
-    color: var(--muted);
-    margin-top: 8px;
-    min-height: 1em;
-  }
-  .theme-btn {
-    border: 1px solid var(--card-border);
-    background: var(--card);
-    color: var(--text);
-    border-radius: 999px;
-    padding: 7px 14px;
-    font-size: 0.8rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  header.hero {
-    text-align: center;
-    margin: 8px 0 22px;
-  }
-  header.hero .icon { font-size: 2.4rem; line-height: 1; }
-  h1 {
-    font-size: 1.4rem;
-    margin: 6px 0 4px;
-    letter-spacing: 0.02em;
-  }
-  .subtitle {
-    color: var(--muted);
-    font-size: 0.85rem;
-    line-height: 1.5;
-    max-width: 420px;
-    margin: 0 auto;
-  }
-  .card {
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    border-radius: 18px;
-    padding: 20px 20px 22px;
-    box-shadow: 0 10px 34px rgba(0,0,0,0.18);
-    margin-bottom: 16px;
-    transition: background 0.3s ease, border-color 0.3s ease;
-  }
-  .step-title {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 700;
-    font-size: 0.95rem;
-    margin-bottom: 14px;
-  }
-  .step-num {
-    width: 22px; height: 22px;
-    border-radius: 50%;
-    background: var(--accent-soft);
-    color: var(--accent);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.78rem;
-    flex-shrink: 0;
-  }
-  label {
-    display: block;
-    font-size: 0.85rem;
-    margin: 14px 0 6px;
-    color: var(--muted);
-  }
-  label:first-of-type { margin-top: 0; }
-  select, input[type="date"], input[type="number"] {
-    width: 100%;
-    padding: 10px 12px;
-    border-radius: 10px;
-    border: 1px solid var(--card-border);
-    background: var(--input-bg);
-    color: var(--text);
-    font-size: 0.95rem;
-    appearance: none;
-    -webkit-appearance: none;
-  }
-  select {
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1l6 6 6-6' stroke='%2393a2b8' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    padding-right: 34px;
-  }
-  .hint {
-    font-size: 0.72rem;
-    color: var(--muted);
-    margin-top: 5px;
-    line-height: 1.5;
-  }
-  .county-badge {
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-    margin-top: 8px;
-    background: var(--chip-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 10px;
-    padding: 8px 12px;
-    font-size: 0.75rem;
-    line-height: 1.6;
-    color: var(--muted);
-    overflow-wrap: break-word;
-  }
-  .county-badge b { color: var(--accent); font-size: 0.8rem; }
-  .quick-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 12px;
-    font-size: 0.78rem;
-    color: var(--accent);
-    text-decoration: none;
-    border: 1px solid var(--card-border);
-    border-radius: 999px;
-    padding: 6px 14px;
-    background: var(--card);
-  }
-  .locate-row {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-  }
-  .locate-row select { flex: 1; }
-  .locate-btn {
-    flex-shrink: 0;
-    border: 1px solid var(--card-border);
-    background: var(--card-2);
-    color: var(--text);
-    border-radius: 10px;
-    padding: 10px 12px;
-    font-size: 0.85rem;
-    cursor: pointer;
-    white-space: nowrap;
-  }
-  .locate-btn:disabled { opacity: 0.6; cursor: wait; }
-  .locate-status {
-    font-size: 0.72rem;
-    color: var(--muted);
-    margin-top: 6px;
-    min-height: 1em;
-  }
-  .checkbox-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    margin-top: 14px;
-    background: var(--card-2);
-    border: 1px solid var(--card-border);
-    border-radius: 10px;
-    padding: 10px 12px;
-  }
-  .checkbox-row input { width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0; }
-  .checkbox-row label { margin: 0; font-size: 0.85rem; color: var(--text); }
-  .btn {
-    width: 100%;
-    margin-top: 4px;
-    margin-bottom: 16px;
-    padding: 15px;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(135deg, var(--accent), #0ea5e9);
-    color: #fff;
-    font-weight: 700;
-    font-size: 1rem;
-    cursor: pointer;
-    box-shadow: 0 6px 20px var(--accent-soft);
-  }
-  .btn:active { transform: scale(0.98); }
-  .result-card {
-    display: none;
-    text-align: center;
-  }
-  .result-card.show { display: block; animation: fadeUp 0.35s ease; }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .percent {
-    font-size: 3.2rem;
-    font-weight: 800;
-    margin: 6px 0 0;
-  }
-  .msg-top { font-size: 1rem; color: var(--text); font-weight: 600; margin: 0 0 4px; }
-  .msg-bottom { font-size: 0.88rem; color: var(--muted); margin: 6px 0 0; }
-  .bar-bg {
-    width: 100%;
-    height: 12px;
-    border-radius: 999px;
-    background: var(--track-bg);
-    overflow: hidden;
-    margin-top: 14px;
-  }
-  .bar-fill {
-    height: 100%;
-    border-radius: 999px;
-    transition: width 0.5s ease;
-  }
-  .checklist {
-    text-align: left;
-    margin-top: 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .check-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.85rem;
-    background: var(--card-2);
-    border: 1px solid var(--card-border);
-    border-radius: 10px;
-    padding: 9px 12px;
-  }
-  .check-item .dot {
-    width: 20px; height: 20px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.7rem;
-    flex-shrink: 0;
-  }
-  .dot.yes { background: rgba(74,222,128,0.18); color: var(--safe); }
-  .dot.no { background: rgba(148,163,184,0.18); color: var(--muted); }
-  .hist-line {
-    margin-top: 14px;
-    font-size: 0.78rem;
-    color: var(--muted);
-    line-height: 1.6;
-  }
-  .disclaimer {
-    font-size: 0.72rem;
-    color: var(--muted);
-    text-align: center;
-    line-height: 1.75;
-    margin-top: 18px;
-  }
-  .disclaimer a { color: var(--accent); }
-  .holiday-note {
-    text-align: center;
-    color: var(--accent2);
-    font-size: 0.88rem;
-    margin-top: 10px;
-    display: none;
-  }
-  .holiday-note.show { display: block; }
-  .faq-item {
-    border: 1px solid var(--card-border);
-    border-radius: 10px;
-    padding: 4px 14px;
-    margin-bottom: 10px;
-    background: var(--card-2);
-  }
-  .faq-item summary {
-    cursor: pointer;
-    padding: 12px 0;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--text);
-    list-style: none;
-  }
-  .faq-item summary::-webkit-details-marker { display: none; }
-  .faq-item summary::before { content: "▸ "; color: var(--accent); }
-  .faq-item[open] summary::before { content: "▾ "; }
-  .faq-item p {
-    font-size: 0.85rem;
-    color: var(--muted);
-    line-height: 1.7;
-    margin: 0 0 14px;
-  }
-  a:focus-visible,
-  button:focus-visible,
-  select:focus-visible,
-  input:focus-visible,
-  summary:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-    border-radius: 4px;
-  }
-</style>
 </head>
 <body>
-<div class="wrap">
-  <div class="top-row">
-    <a class="github-button" href="https://github.com/stwater20/typhoon" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star stwater20/typhoon on GitHub">Star</a>
-    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙 深色</button>
-  </div>
+<a class="sr-only" href="#calc">跳到主要內容</a>
 
-  <header class="hero">
-    <div class="icon">🌀</div>
-    <h1>颱風假機率計算器</h1>
-    <p class="subtitle">依《天然災害停止上班及上課作業辦法》門檻＋近10年各縣市真實停班紀錄，估算隔天放假機率</p>
-    <a class="quick-link" href="https://www.dgpa.gov.tw/typh/daily/nds.html" target="_blank" rel="noopener">🔴 只想看現在官方公告？點這裡查即時停班停課</a>
-
-    <div class="share-row">
-      <button type="button" class="share-btn" onclick="shareFacebook()" aria-label="分享到 Facebook" title="分享到 Facebook">
-        <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg>
-      </button>
-      <button type="button" class="share-btn" onclick="shareThreads()" aria-label="分享到 Threads" title="分享到 Threads">
-        <svg viewBox="0 0 24 24"><path d="M12.2 24c-3.3 0-5.9-1.1-7.7-3.2C2.8 18.8 2 16.1 2 12.9 2 9.7 2.9 7 4.6 5 6.5 2.7 9.3 1.5 12.9 1.5c3 0 5.4.9 7.1 2.6 1.4 1.4 2.2 3.2 2.4 5.3l-2.5.2c-.2-1.6-.8-2.8-1.7-3.7-1.2-1.2-2.9-1.8-5.2-1.8-2.7 0-4.8.9-6.1 2.7C5.6 8.2 5 10.3 5 12.9c0 2.5.6 4.6 1.9 6.1 1.3 1.5 3.2 2.4 5.5 2.4 1.9 0 3.5-.5 4.6-1.5 1-.9 1.6-2.1 1.7-3.5-.5.3-1.2.6-2.1.7-1 .2-2 .1-2.9-.1-1.6-.4-2.8-1.5-3-3.1-.2-1.5.5-2.9 1.9-3.7 1.2-.7 2.9-.9 4.6-.5.5.1 1 .3 1.4.5 0-.6-.2-1.1-.5-1.5-.5-.6-1.3-.9-2.4-.9-1.4 0-2.5.5-3.4 1.5l-1.9-1.5c1.3-1.5 3.1-2.3 5.3-2.3 1.9 0 3.4.6 4.4 1.7.9 1 1.4 2.4 1.4 4v.5c1.2 1 1.9 2.5 1.9 4.3 0 2-1 3.7-2.6 4.9-1.5 1.1-3.5 1.7-5.7 1.7Zm.9-9.6c-1.1-.3-2.1-.2-2.8.2-.6.3-.9.8-.8 1.3.1.6.7 1 1.5 1.2.7.2 1.5.2 2.2 0 .8-.2 1.4-.6 1.8-1.1.2-.3.3-.6.3-1-.6-.3-1.3-.5-2-.6Z"/></svg>
-      </button>
-      <button type="button" class="share-btn" onclick="shareInstagram()" aria-label="複製連結分享到 Instagram" title="複製連結分享到 Instagram">
-        <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 2.1.3 2.9.6.8.3 1.4.7 2 1.3.6.6 1 1.2 1.3 2 .3.8.5 1.7.6 2.9.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 2.1-.6 2.9-.3.8-.7 1.4-1.3 2-.6.6-1.2 1-2 1.3-.8.3-1.7.5-2.9.6-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-2.1-.3-2.9-.6-.8-.3-1.4-.7-2-1.3-.6-.6-1-1.2-1.3-2-.3-.8-.5-1.7-.6-2.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-2.1.6-2.9.3-.8.7-1.4 1.3-2 .6-.6 1.2-1 2-1.3.8-.3 1.7-.5 2.9-.6C8.4 2.2 8.8 2.2 12 2.2Zm0 1.8c-3.1 0-3.5 0-4.7.1-1.1.1-1.7.2-2.1.4-.5.2-.9.4-1.3.8-.4.4-.6.8-.8 1.3-.2.4-.3 1-.4 2.1-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c.1 1.1.2 1.7.4 2.1.2.5.4.9.8 1.3.4.4.8.6 1.3.8.4.2 1 .3 2.1.4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.2 2.1-.4.5-.2.9-.4 1.3-.8.4-.4.6-.8.8-1.3.2-.4.3-1 .4-2.1.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c-.1-1.1-.2-1.7-.4-2.1-.2-.5-.4-.9-.8-1.3-.4-.4-.8-.6-1.3-.8-.4-.2-1-.3-2.1-.4-1.2-.1-1.6-.1-4.7-.1Zm0 3.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Zm0 1.8a2.7 2.7 0 1 0 0 5.4 2.7 2.7 0 0 0 0-5.4Zm4.7-2a1.05 1.05 0 1 1 0 2.1 1.05 1.05 0 0 1 0-2.1Z"/></svg>
-      </button>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="#top" aria-label="颱風假機率計算器 首頁">
+      <span class="brand-mark"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="5.2" fill="none" stroke="currentColor" stroke-width="3"/><path d="M16 10.8C16 5 20.5 2.6 26 3.2" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M16 21.2c0 5.8-4.5 8.2-10 7.6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span>
+      <span class="brand-text">颱風假機率</span>
+    </a>
+    <nav class="nav" aria-label="主要導覽">
+      <a href="#calc">機率估算</a>
+      <a href="#faq">常見問題</a>
+    </nav>
+    <div class="header-actions">
+      <span class="gh-star"><a class="github-button" href="https://github.com/stwater20/typhoon" data-icon="octicon-star" data-show-count="true" aria-label="Star stwater20/typhoon on GitHub">Star</a></span>
+      <button type="button" class="icon-btn" id="themeBtn" aria-label="切換深淺色">☀️ 淺色</button>
     </div>
-    <p class="share-status" id="shareStatus" role="status" aria-live="polite"></p>
-  </header>
+  </div>
+</header>
 
-  <div class="card">
-    <div class="step-title"><span class="step-num">1</span>地點與日期</div>
-
-    <label for="county">縣市</label>
-    <div class="locate-row">
-      <select id="county" onchange="onCountyChange()"></select>
-      <button type="button" class="locate-btn" id="locateBtn" onclick="locateMe()">📍 定位</button>
+<main id="top">
+  <section class="hero">
+    <div class="sky" aria-hidden="true">
+      <span class="cloud c1"></span><span class="cloud c2"></span><span class="cloud c3"></span>
     </div>
-    <p class="locate-status" id="locateStatus" role="status" aria-live="polite"></p>
-    <div class="county-badge" id="countyBadge"></div>
-
-    <label for="date">預計放假的日期</label>
-    <input type="date" id="date">
-  </div>
-
-  <div class="card">
-    <div class="step-title"><span class="step-num">2</span>風雨預測</div>
-
-    <label for="wind">預測平均風力</label>
-    <select id="wind">
-      <option value="6">6 級以下</option>
-      <option value="7">7 級</option>
-      <option value="8">8 級</option>
-      <option value="9">9 級</option>
-      <option value="10">10 級以上</option>
-    </select>
-    <p class="hint">法規門檻：平均風力達 7 級以上。</p>
-
-    <label for="gust">預測最大陣風</label>
-    <select id="gust">
-      <option value="9">9 級以下</option>
-      <option value="10">10 級</option>
-      <option value="11">11 級</option>
-      <option value="12">12 級</option>
-      <option value="13">13 級以上</option>
-    </select>
-    <p class="hint">法規門檻：陣風達 10 級以上。</p>
-
-    <label for="terrain">地形類型</label>
-    <select id="terrain">
-      <option value="350">平地為主（門檻累積雨量 350 毫米）</option>
-      <option value="200">山區為主（門檻累積雨量 200 毫米）</option>
-    </select>
-
-    <label for="rain">預測累積雨量（毫米）</label>
-    <input type="number" id="rain" min="0" step="10" value="0">
-
-    <div class="checkbox-row">
-      <input type="checkbox" id="disasterRisk">
-      <label for="disasterRisk">當地已有淹水／坍方等災情，或有致災之虞</label>
+    <div class="container hero-inner">
+      <span class="pill"><span class="dot" aria-hidden="true"></span>依法規門檻＋近 10 年縣市紀錄</span>
+      <h1>明天會放<span class="hl">颱風假</span>嗎？</h1>
+      <p class="lead">輸入中央氣象署的風雨預報，依停班停課法規門檻與各縣市近 10 年紀錄，幫你估算放假機率。</p>
+      <div class="hero-card">
+        <div class="hc-row">
+          <div>
+            <div class="hc-label">你的縣市</div>
+            <div class="hc-county" id="heroCounty">新北市</div>
+          </div>
+          <div class="hc-right">
+            <div class="hc-label">近 10 年颱風假機率</div>
+            <div class="hc-num num" id="heroPct">—</div>
+          </div>
+        </div>
+        <div class="hc-actions">
+          <a class="btn btn-primary" href="#calc">開始估算</a>
+          <a class="btn btn-soft" href="https://www.dgpa.gov.tw/typh/daily/nds.html" target="_blank" rel="noopener">查官方公告 ↗</a>
+        </div>
+      </div>
     </div>
-    <p class="hint">法規規定：雨量達門檻，且「已致災或有致災之虞」才會停班停課。</p>
+  </section>
+
+  <!-- ===== 機率估算 ===== -->
+  <section class="section" id="calc">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2>颱風假機率計算器</h2>
+          <p>輸入中央氣象署預報的風力與雨量，依法規門檻與縣市歷史傾向粗估，僅供參考。</p>
+        </div>
+      </div>
+
+      <div class="calc-grid">
+        <form id="calcForm" novalidate>
+          <div class="card">
+            <h3 class="card-title"><span class="step-num">1</span>地點與日期</h3>
+            <div class="field">
+              <label for="county">縣市</label>
+              <div class="locate-row">
+                <select id="county"></select>
+                <button type="button" class="locate-btn" id="locateBtn">📍 定位</button>
+              </div>
+              <p class="status-line" id="locateStatus" role="status" aria-live="polite"></p>
+              <div class="county-badge" id="countyBadge"></div>
+            </div>
+            <div class="field">
+              <label for="date">預計放假的日期</label>
+              <input type="date" id="date">
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="card-title"><span class="step-num">2</span>輸入氣象署預報</h3>
+            <div class="field-row">
+              <div class="field">
+                <label for="wind">預測平均風力</label>
+                <select id="wind">
+                  <option value="6">6 級以下</option>
+                  <option value="7">7 級</option>
+                  <option value="8">8 級</option>
+                  <option value="9">9 級</option>
+                  <option value="10">10 級以上</option>
+                </select>
+                <p class="hint">門檻：平均 7 級以上</p>
+              </div>
+              <div class="field">
+                <label for="gust">預測最大陣風</label>
+                <select id="gust">
+                  <option value="9">9 級以下</option>
+                  <option value="10">10 級</option>
+                  <option value="11">11 級</option>
+                  <option value="12">12 級</option>
+                  <option value="13">13 級以上</option>
+                </select>
+                <p class="hint">門檻：陣風 10 級以上</p>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="terrain">地形類型</label>
+                <select id="terrain">
+                  <option value="350">平地（門檻 350mm）</option>
+                  <option value="200">山區（門檻 200mm）</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="rain">預測累積雨量（mm）</label>
+                <input type="number" id="rain" min="0" step="10" value="0" inputmode="numeric">
+              </div>
+            </div>
+            <div class="checkbox-row">
+              <input type="checkbox" id="disasterRisk">
+              <label for="disasterRisk">當地已有淹水／坍方等災情，或有致災之虞</label>
+            </div>
+            <p class="hint">法規規定：雨量達門檻，且「已致災或有致災之虞」才會停班停課。</p>
+            <p class="hint">風力、雨量請參考<a href="https://www.cwa.gov.tw/V8/C/P/Typhoon/TY_NEWS.html" target="_blank" rel="noopener">中央氣象署颱風消息</a>；本站不發布天氣預報，只依你輸入的數值估算。</p>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block calc-submit">估算放假機率</button>
+          <button type="button" class="btn btn-wish btn-block" id="wishBtn">🙏 我覺得<span id="wishChief">市長</span>想放</button>
+        </form>
+
+        <div class="result-col">
+          <div class="card result-card" id="result" aria-live="polite">
+            <div class="result-empty">
+              <div class="big" aria-hidden="true">☁️</div>
+              <p>填好左邊的風雨條件後按「估算放假機率」<br>結果會顯示在這裡。</p>
+            </div>
+            <div class="result-body">
+              <p class="wish-tag" id="wishTag" hidden>許願模式・不是估算</p>
+              <p class="msg-top" id="msgTop"></p>
+              <div class="gauge">
+                <svg viewBox="0 0 120 120" aria-hidden="true">
+                  <circle class="track" cx="60" cy="60" r="52" fill="none" stroke-width="10"/>
+                  <circle class="value" id="gaugeValue" cx="60" cy="60" r="52" fill="none" stroke-width="10" stroke-linecap="round" stroke-dasharray="326.73" stroke-dashoffset="326.73"/>
+                </svg>
+                <div class="gauge-label"><div><span class="pct num" id="percent">0%</span><small id="gaugeCaption">模型估算放假機率</small></div></div>
+              </div>
+              <p class="msg-bottom" id="msgBottom"></p>
+              <div class="holiday-note" id="holidayNote">🎉 你選的日子本來就是週末，反正都放假！</div>
+              <div class="checklist" id="checklist"></div>
+              <p class="hist-line" id="histLine"></p>
+              <p class="result-note">估算僅供參考，是否放假以<a href="https://www.dgpa.gov.tw/typh/daily/nds.html" target="_blank" rel="noopener">人事行政總處</a>及縣市政府公告為準。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section class="section" id="faq">
+    <div class="container" style="max-width:820px">
+      <div class="section-head"><div><h2>常見問題</h2></div></div>
+      <details class="faq-item">
+        <summary>颱風假是誰決定的？</summary>
+        <p>依《天然災害停止上班及上課作業辦法》，是否停止上班及上課由各直轄市、縣（市）首長決定並公告，中央氣象署只負責提供風力、雨量等預報資料作為判斷依據，並不會直接宣布停班停課。</p>
+      </details>
+      <details class="faq-item">
+        <summary>這個估算結果可以當作放假依據嗎？</summary>
+        <p>不行。本站只是依法規門檻和歷史紀錄做的粗估，風雨數值也是你自己輸入的氣象署預報。是否停班停課，請以行政院人事行政總處「天然災害停止上班及上課情形」網頁與各縣市政府公告為準，也請不要把估算結果當成放假消息轉傳。</p>
+      </details>
+      <details class="faq-item">
+        <summary>為什麼台北、新北、基隆常常一起放假？</summary>
+        <p>北北基（台北市、新北市、基隆市）從2016年起建立聯防機制，三縣市首長會互相聯繫協調，盡量同步公告，避免通勤族在只有一個縣市放假時卡在半路的情況，但仍可能因各自轄區天氣狀況不同而分開發布。</p>
+      </details>
+      <details class="faq-item">
+        <summary>平均風力和陣風有什麼不同？</summary>
+        <p>平均風力是一段時間（通常10分鐘）內風速的平均值，陣風則是瞬間最大風速，數值通常明顯高於平均風力。法規門檻是平均風力達7級以上，或陣風達10級以上，兩者符合其中一項就達標。</p>
+      </details>
+      <details class="faq-item">
+        <summary>只下雨沒有颱風也會放假嗎？</summary>
+        <p>會。法規也訂有雨量門檻，只要累積雨量達到參考基準（平地約350毫米、山區約200毫米），且已經致災或有致災之虞，即使風力未達標，地方政府一樣可以宣布停止上班及上課，這也是強降雨、共伴效應等情境常見的停班原因。</p>
+      </details>
+      <details class="faq-item">
+        <summary>停班停課公告通常什麼時候發布？</summary>
+        <p>依規定，全日或上午半日停止上班及上課的公告，應於前一日晚間7時至10時前發布；如果是白天才決定隔天下午或其他時段停班，也會依情況即時公告，實際時間仍以各縣市政府發布為準。</p>
+      </details>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <p>
+        法規門檻依據：<a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=S0110022" target="_blank" rel="noopener">天然災害停止上班及上課作業辦法</a>第 4 條——風力達「平均 7 級以上或陣風 10 級以上」，雨量達「參考基準（平地約 350 毫米、山區約 200 毫米）且已致災或有致災之虞」。
+        各縣市歷史傾向依據近 10 年公開統計的縣市颱風假機率（<a href="https://ibuyranking.blogspot.com/2024/10/typhoon-day.html" target="_blank" rel="noopener">資料來源</a>，非官方數據）。
+      </p>
+      <p>本站估算僅供參考娛樂，不代表任何官方立場；是否停班停課一律以<a href="https://www.dgpa.gov.tw/typh/daily/nds.html" target="_blank" rel="noopener">行政院人事行政總處</a>及各縣市政府公告為準。</p>
+    </div>
+    <div>
+      <div class="footer-links">
+        <a href="privacy.html">隱私權政策</a>
+        <a href="https://github.com/stwater20/typhoon" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.cwa.gov.tw/" target="_blank" rel="noopener">中央氣象署</a>
+      </div>
+      <div class="share-row" aria-label="分享本站">
+        <button type="button" class="share-btn" data-share="facebook" aria-label="分享到 Facebook" title="分享到 Facebook">
+          <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg>
+        </button>
+        <button type="button" class="share-btn" data-share="threads" aria-label="分享到 Threads" title="分享到 Threads">
+          <svg viewBox="0 0 24 24"><path d="M12.2 24c-3.3 0-5.9-1.1-7.7-3.2C2.8 18.8 2 16.1 2 12.9 2 9.7 2.9 7 4.6 5 6.5 2.7 9.3 1.5 12.9 1.5c3 0 5.4.9 7.1 2.6 1.4 1.4 2.2 3.2 2.4 5.3l-2.5.2c-.2-1.6-.8-2.8-1.7-3.7-1.2-1.2-2.9-1.8-5.2-1.8-2.7 0-4.8.9-6.1 2.7C5.6 8.2 5 10.3 5 12.9c0 2.5.6 4.6 1.9 6.1 1.3 1.5 3.2 2.4 5.5 2.4 1.9 0 3.5-.5 4.6-1.5 1-.9 1.6-2.1 1.7-3.5-.5.3-1.2.6-2.1.7-1 .2-2 .1-2.9-.1-1.6-.4-2.8-1.5-3-3.1-.2-1.5.5-2.9 1.9-3.7 1.2-.7 2.9-.9 4.6-.5.5.1 1 .3 1.4.5 0-.6-.2-1.1-.5-1.5-.5-.6-1.3-.9-2.4-.9-1.4 0-2.5.5-3.4 1.5l-1.9-1.5c1.3-1.5 3.1-2.3 5.3-2.3 1.9 0 3.4.6 4.4 1.7.9 1 1.4 2.4 1.4 4v.5c1.2 1 1.9 2.5 1.9 4.3 0 2-1 3.7-2.6 4.9-1.5 1.1-3.5 1.7-5.7 1.7Zm.9-9.6c-1.1-.3-2.1-.2-2.8.2-.6.3-.9.8-.8 1.3.1.6.7 1 1.5 1.2.7.2 1.5.2 2.2 0 .8-.2 1.4-.6 1.8-1.1.2-.3.3-.6.3-1-.6-.3-1.3-.5-2-.6Z"/></svg>
+        </button>
+        <button type="button" class="share-btn" data-share="line" aria-label="分享到 LINE" title="分享到 LINE">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 5.6 2 10.1c0 4 3.6 7.4 8.4 8 .3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.6 1.1-.5 6-3.5 8.2-6.1C21.8 13.3 22 11.8 22 10.1 22 5.6 17.5 2 12 2ZM8.2 12.6H6.3c-.3 0-.5-.2-.5-.5V8.3c0-.3.2-.5.5-.5s.5.2.5.5v3.3h1.4c.3 0 .5.2.5.5s-.2.5-.5.5Zm2 -.5c0 .3-.2.5-.5.5s-.5-.2-.5-.5V8.3c0-.3.2-.5.5-.5s.5.2.5.5v3.8Zm4.6 0c0 .2-.1.4-.3.5h-.2c-.2 0-.3-.1-.4-.2l-2-2.7v2.4c0 .3-.2.5-.5.5s-.5-.2-.5-.5V8.3c0-.2.1-.4.3-.5h.2c.2 0 .3.1.4.2l2 2.7V8.3c0-.3.2-.5.5-.5s.5.2.5.5v3.8Zm3.1-2.4c.3 0 .5.2.5.5s-.2.5-.5.5h-1.4v.9h1.4c.3 0 .5.2.5.5s-.2.5-.5.5H16c-.3 0-.5-.2-.5-.5V8.3c0-.3.2-.5.5-.5h1.9c.3 0 .5.2.5.5s-.2.5-.5.5h-1.4v.9h1.4Z"/></svg>
+        </button>
+        <button type="button" class="share-btn" data-share="copy" aria-label="複製連結（可貼到 Instagram）" title="複製連結（可貼到 Instagram）">
+          <svg viewBox="0 0 24 24"><path d="M10.6 13.4a1 1 0 0 1 0-1.4l3.4-3.4a1 1 0 1 1 1.4 1.4L12 13.4a1 1 0 0 1-1.4 0Zm-2.1 5.3a4 4 0 0 1-2.8-6.8l2-2a1 1 0 0 1 1.4 1.4l-2 2a2 2 0 1 0 2.8 2.8l2-2a1 1 0 1 1 1.4 1.4l-2 2a4 4 0 0 1-2.8 1.2Zm7.6-5.2a1 1 0 0 1-.7-1.7l2-2a2 2 0 1 0-2.8-2.8l-2 2a1 1 0 0 1-1.4-1.4l2-2a4 4 0 1 1 5.6 5.6l-2 2a1 1 0 0 1-.7.3Z"/></svg>
+        </button>
+      </div>
+      <p>© <span id="year">2026</span> 颱風假機率計算器 · Made in Taiwan</p>
+    </div>
   </div>
+</footer>
 
-  <button class="btn" onclick="calculate()">估算放假機率</button>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <div class="holiday-note" id="holidayNote">🎉 你選的日子本來就是週末，反正都放假！</div>
-
-  <div class="card result-card" id="result">
-    <p class="msg-top" id="msgTop"></p>
-    <p class="percent" id="percent"></p>
-    <div class="bar-bg"><div class="bar-fill" id="barFill"></div></div>
-    <p class="msg-bottom" id="msgBottom"></p>
-
-    <div class="checklist" id="checklist"></div>
-
-    <p class="hist-line" id="histLine"></p>
-  </div>
-
-  <div class="card">
-    <div class="step-title"><span class="step-num">?</span>常見問題</div>
-
-    <details class="faq-item">
-      <summary>颱風假是誰決定的？</summary>
-      <p>依《天然災害停止上班及上課作業辦法》，是否停止上班及上課由各直轄市、縣（市）首長決定並公告，中央氣象署只負責提供風力、雨量等預報資料作為判斷依據，並不會直接宣布停班停課。</p>
-    </details>
-    <details class="faq-item">
-      <summary>為什麼台北、新北、基隆常常一起放假？</summary>
-      <p>北北基（台北市、新北市、基隆市）從2016年起建立聯防機制，三縣市首長會互相聯繫協調，盡量同步公告，避免通勤族在只有一個縣市放假時卡在半路的情況，但仍可能因各自轄區天氣狀況不同而分開發布。</p>
-    </details>
-    <details class="faq-item">
-      <summary>平均風力和陣風有什麼不同？</summary>
-      <p>平均風力是一段時間（通常10分鐘）內風速的平均值，陣風則是瞬間最大風速，數值通常明顯高於平均風力。法規門檻是平均風力達7級以上，或陣風達10級以上，兩者符合其中一項就達標。</p>
-    </details>
-    <details class="faq-item">
-      <summary>只下雨沒有颱風也會放假嗎？</summary>
-      <p>會。法規也訂有雨量門檻，只要累積雨量達到參考基準（平地約350毫米、山區約200毫米），且已經致災或有致災之虞，即使風力未達標，地方政府一樣可以宣布停止上班及上課，這也是強降雨、共伴效應等情境常見的停班原因。</p>
-    </details>
-    <details class="faq-item">
-      <summary>停班停課公告通常什麼時候發布？</summary>
-      <p>依規定，全日或上午半日停止上班及上課的公告，應於前一日晚間7時至10時前發布；如果是白天才決定隔天下午或其他時段停班，也會依情況即時公告，實際時間仍以各縣市政府發布為準。</p>
-    </details>
-  </div>
-
-  <p class="disclaimer">
-    法規門檻依據：<a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=S0110022" target="_blank" rel="noopener">天然災害停止上班及上課作業辦法</a>第 4 條——
-    風力達「平均 7 級以上或陣風 10 級以上」，雨量達「參考基準（平地約 350 毫米、山區約 200 毫米）且已致災或有致災之虞」。<br>
-    各縣市歷史傾向依據近 10 年公開統計的縣市颱風假機率（<a href="https://ibuyranking.blogspot.com/2024/10/typhoon-day.html" target="_blank" rel="noopener">資料來源</a>，非官方數據，僅供參考)。<br>
-    即使未達門檻，地方政府仍可能因地形、交通、水電中斷等原因另行宣布；正式結果一律以各縣市政府公告為準，公告通常於前一日晚間 7 時至 10 時前發布。<br>
-    「📍 定位」功能會使用瀏覽器定位權限，並將座標送至開源地圖服務 OpenStreetMap Nominatim 轉換成縣市名稱，僅用於自動選取，不會被本工具儲存或送往其他地方。
-  </p>
-</div>
-
+<script src="assets/js/app.js"></script>
 <script>
-// county: [name, 近10年颱風假機率(%), 法規裁量係數(以全國平均正規化)]
-const counties = [
-  ["屏東縣", 87.5],
-  ["高雄市", 84.4],
-  ["台南市", 75.0],
-  ["花蓮縣", 71.9],
-  ["嘉義縣", 65.6],
-  ["澎湖縣", 62.5],
-  ["台東縣", 62.5],
-  ["嘉義市", 59.4],
-  ["宜蘭縣", 56.3],
-  ["雲林縣", 56.3],
-  ["南投縣", 50.0],
-  ["新北市", 46.9],
-  ["連江縣", 46.9],
-  ["台北市", 43.8],
-  ["基隆市", 43.8],
-  ["彰化縣", 43.8],
-  ["台中市", 43.8],
-  ["新竹縣", 43.8],
-  ["金門縣", 43.8],
-  ["桃園市", 40.6],
-  ["新竹市", 40.6],
-  ["苗栗縣", 40.6],
-];
-const avgPct = counties.reduce((s, c) => s + c[1], 0) / counties.length;
-
-const countyHints = {
-  '屏東縣': '含恆春半島',
-  '連江縣': '馬祖',
-};
-
-function populateCounties() {
-  const sel = document.getElementById('county');
-  const savedIdx = localStorage.getItem('typhoon-county');
-  counties.forEach((c, i) => {
-    const opt = document.createElement('option');
-    opt.value = i;
-    opt.textContent = c[0];
-    if (countyHints[c[0]]) opt.title = countyHints[c[0]];
-    sel.appendChild(opt);
-  });
-  if (savedIdx !== null && counties[savedIdx]) {
-    sel.value = savedIdx;
-  } else {
-    sel.value = counties.findIndex(c => c[0].startsWith('新北市'));
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
   }
-}
-
-function updateCountyBadge() {
-  const idx = parseInt(document.getElementById('county').value, 10);
-  const c = counties[idx];
-  const hint = countyHints[c[0]] ? `${countyHints[c[0]]}・` : '';
-  const badge = document.getElementById('countyBadge');
-  badge.innerHTML = `${hint}近10年颱風假機率：<b>${c[1]}%</b>（歷史統計參考，非本次預測結果）`;
-}
-
-function onCountyChange() {
-  localStorage.setItem('typhoon-county', document.getElementById('county').value);
-  updateCountyBadge();
-}
-
-function setDefaultDate() {
-  const d = new Date();
-  const yyyy = d.getFullYear();
-  const mm = String(d.getMonth() + 1).padStart(2, '0');
-  const dd = String(d.getDate()).padStart(2, '0');
-  document.getElementById('date').value = `${yyyy}-${mm}-${dd}`;
-}
-
-function normalizeName(s) {
-  return (s || '').replace(/臺/g, '台');
-}
-
-function findCountyIndex(candidateStrings) {
-  const normed = candidateStrings.filter(Boolean).map(normalizeName);
-  for (let i = 0; i < counties.length; i++) {
-    const core = normalizeName(counties[i][0]).replace(/（.*）/, '');
-    if (normed.some(s => s.includes(core))) return i;
-  }
-  return -1;
-}
-
-function locateMe() {
-  const btn = document.getElementById('locateBtn');
-  const status = document.getElementById('locateStatus');
-
-  if (!navigator.geolocation) {
-    status.textContent = '此瀏覽器不支援定位功能，請手動選擇縣市。';
-    return;
-  }
-
-  btn.disabled = true;
-  status.textContent = '📡 正在定位...';
-
-  navigator.geolocation.getCurrentPosition(async (pos) => {
-    const { latitude, longitude } = pos.coords;
-    try {
-      const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=zh-TW&zoom=10`;
-      const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
-      if (!res.ok) throw new Error('reverse geocoding failed');
-      const data = await res.json();
-      const addr = data.address || {};
-      const candidates = [addr.county, addr.city, addr.state, addr.town, addr.city_district, data.display_name];
-      const idx = findCountyIndex(candidates);
-      if (idx >= 0) {
-        document.getElementById('county').value = idx;
-        onCountyChange();
-        status.textContent = `✅ 已定位到：${counties[idx][0]}`;
-      } else {
-        status.textContent = '⚠️ 定位成功，但無法對應到台灣縣市，請手動選擇。';
-      }
-    } catch (e) {
-      status.textContent = '⚠️ 取得地區資訊失敗（可能離線或服務暫時無法使用），請手動選擇。';
-    } finally {
-      btn.disabled = false;
-    }
-  }, (err) => {
-    btn.disabled = false;
-    if (err.code === 1) {
-      status.textContent = '⚠️ 定位權限被拒絕，請手動選擇縣市。';
-    } else if (err.code === 3) {
-      status.textContent = '⚠️ 定位逾時，請再試一次或手動選擇。';
-    } else {
-      status.textContent = '⚠️ 無法取得目前位置，請手動選擇縣市。';
-    }
-  }, { timeout: 8000 });
-}
-
-function shareFacebook() {
-  const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(location.href)}`;
-  window.open(url, '_blank', 'noopener,width=600,height=500');
-}
-
-function shareThreads() {
-  const text = `🌀 颱風假機率計算器，快來看看你放假機率多少！ ${location.href}`;
-  const url = `https://www.threads.net/intent/post?text=${encodeURIComponent(text)}`;
-  window.open(url, '_blank', 'noopener');
-}
-
-function shareInstagram() {
-  const status = document.getElementById('shareStatus');
-  const finish = (ok) => {
-    status.textContent = ok
-      ? '✅ 連結已複製，Instagram 沒有網頁分享功能，貼到限時動態或貼文即可。'
-      : '⚠️ 複製失敗，請手動選取網址列複製。';
-  };
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(location.href).then(() => finish(true)).catch(() => finish(false));
-  } else {
-    finish(false);
-  }
-}
-
-function getSystemPref() {
-  return window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-}
-
-function applyTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme);
-  const btn = document.getElementById('themeBtn');
-  btn.textContent = theme === 'light' ? '☀️ 淺色' : '🌙 深色';
-  localStorage.setItem('typhoon-theme', theme);
-}
-
-function toggleTheme() {
-  const current = document.documentElement.getAttribute('data-theme') || 'dark';
-  applyTheme(current === 'light' ? 'dark' : 'light');
-}
-
-(function init() {
-  populateCounties();
-  updateCountyBadge();
-  setDefaultDate();
-  const saved = localStorage.getItem('typhoon-theme');
-  applyTheme(saved || getSystemPref());
-})();
-
-function calculate() {
-  const dateInput = document.getElementById('date').value;
-  const holidayNote = document.getElementById('holidayNote');
-  const resultBox = document.getElementById('result');
-
-  let isWeekend = false;
-  if (dateInput) {
-    const d = new Date(dateInput + 'T00:00:00');
-    const day = d.getDay();
-    isWeekend = (day === 0 || day === 6);
-  }
-
-  const idx = parseInt(document.getElementById('county').value, 10);
-  const county = counties[idx];
-  const exposure = county[1] / avgPct;
-
-  const avgWind = parseFloat(document.getElementById('wind').value);
-  const gust = parseFloat(document.getElementById('gust').value);
-  const rainThreshold = parseFloat(document.getElementById('terrain').value);
-  const rainAmount = parseFloat(document.getElementById('rain').value) || 0;
-  const disasterRisk = document.getElementById('disasterRisk').checked;
-
-  const windMeetsLaw = avgWind >= 7;
-  const gustMeetsLaw = gust >= 10;
-  const rainMeetsLaw = (rainAmount >= rainThreshold) && disasterRisk;
-
-  let base;
-  if (windMeetsLaw || gustMeetsLaw || rainMeetsLaw) {
-    base = 65;
-  } else {
-    base = 8; // 未達法規門檻，僅地方裁量或地形特殊情況
-  }
-
-  const windBonus = Math.max(0, avgWind - 7) * 6;
-  const gustBonus = Math.max(0, gust - 10) * 4;
-  const rainBonus = rainMeetsLaw ? Math.min(20, ((rainAmount - rainThreshold) / rainThreshold) * 20) : 0;
-
-  let raw = (base + windBonus + gustBonus + rainBonus) * exposure;
-  raw = Math.min(98, Math.max(2, raw));
-  const pct = Math.round(raw);
-
-  const percentEl = document.getElementById('percent');
-  percentEl.textContent = pct + '%';
-  const color = pct >= 70 ? 'var(--safe)' : (pct >= 40 ? 'var(--accent2)' : 'var(--danger)');
-  percentEl.style.color = color;
-
-  const barFill = document.getElementById('barFill');
-  barFill.style.width = pct + '%';
-  barFill.style.background = color;
-
-  let topMsg, bottomMsg;
-  if (pct >= 85) {
-    topMsg = '已明顯達到法規門檻，條件相當夠力';
-    bottomMsg = '棉被枕頭準備好，明天大概率可以躺平 🛌';
-  } else if (pct >= 60) {
-    topMsg = '已達或接近法規門檻，但地方仍有裁量空間';
-    bottomMsg = '建議睡前再 check 一次氣象署跟縣市政府粉專公告';
-  } else if (pct >= 35) {
-    topMsg = '尚未明顯達標，機率偏低';
-    bottomMsg = '鬧鐘還是先設一下，別太早開香檳';
-  } else {
-    topMsg = '目前條件離法規門檻還有距離';
-    bottomMsg = '大概率要正常上班上課，早點睡吧';
-  }
-  document.getElementById('msgTop').textContent = topMsg;
-  document.getElementById('msgBottom').textContent = bottomMsg;
-
-  const checklist = document.getElementById('checklist');
-  const items = [
-    { label: `平均風力達 7 級以上（目前選：${avgWind} 級）`, met: windMeetsLaw },
-    { label: `陣風達 10 級以上（目前選：${gust} 級）`, met: gustMeetsLaw },
-    { label: `累積雨量達門檻且有致災之虞（目前：${rainAmount}mm / 門檻 ${rainThreshold}mm）`, met: rainMeetsLaw },
-  ];
-  checklist.innerHTML = items.map(it => `
-    <div class="check-item">
-      <span class="dot ${it.met ? 'yes' : 'no'}">${it.met ? '✓' : '–'}</span>
-      <span>${it.label}</span>
-    </div>
-  `).join('');
-
-  document.getElementById('histLine').textContent =
-    `參考：${county[0]}近10年颱風假機率為 ${county[1]}%（全國平均約 ${avgPct.toFixed(1)}%），本次估算已將此歷史傾向納入計算。`;
-
-  resultBox.classList.add('show');
-
-  if (isWeekend) {
-    holidayNote.classList.add('show');
-  } else {
-    holidayNote.classList.remove('show');
-  }
-}
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
-  });
-}
 </script>
 </body>
 </html>

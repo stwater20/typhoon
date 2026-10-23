@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://stwater20.github.io/typhoon/sitemap.xml
+Sitemap: https://typhoon.sectools.tw/sitemap.xml

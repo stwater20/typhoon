@@ -1,32 +1,46 @@
 # 颱風假機率計算器 🌀
 
-🔗 **網站：[https://stwater20.github.io/typhoon/](https://stwater20.github.io/typhoon/)**
+🔗 **網站：[https://typhoon.sectools.tw/](https://typhoon.sectools.tw/)**
 
-純前端小工具（單一 `index.html`，無需後端），輸入預測風力、陣風、雨量，估算隔天放颱風假的機率。娛樂參考用，正式結果一律以各縣市政府公告為準。
+純前端靜態網站（GitHub Pages 即可部署，沒有後端、不需要任何帳號或資料庫）。輸入中央氣象署預報的風力、陣風、雨量，估算隔天放颱風假的機率。娛樂參考用，正式結果一律以行政院人事行政總處及各縣市政府公告為準。
 
 ## 功能
 
-- 日期預設為今天，開啟就能直接看
-- 「📍 定位」按鈕：呼叫瀏覽器定位 + OpenStreetMap Nominatim 反查，自動選到所在縣市；權限被拒、定位逾時、離線等情況都有對應提示，不會卡住
-- 22 縣市可選，選定後顯示該縣市近 10 年颱風假歷史機率；選過的縣市會記住，下次開啟直接帶入
-- 依《天然災害停止上班及上課作業辦法》第 4 條的風力／雨量門檻計算基礎機率
-- 結果附帶檢核清單，列出哪些法規條件已達標、哪些沒有
-- 頁首有「查即時停班停課公告」快速連結，只想看官方結果的人不用填表單
-- 淺色／深色模式切換，記住上次選擇，預設跟隨系統
-- 支援手機瀏覽器
-- Facebook／Threads 一鍵分享，Instagram 沒有網頁分享 API，改用「複製連結」
-- 頁首內嵌 GitHub Star 按鈕（即時星數）
-- 基本 SEO：meta description/keywords、Open Graph／Twitter Card 分享預覽圖、canonical、JSON-LD、robots.txt、sitemap.xml、ads.txt
-- PWA：可加到手機主畫面、離線快取基本頁面（manifest.json + sw.js）
-- 常見問題（FAQ）區塊，含 FAQPage 結構化資料，幫助搜尋引擎長尾流量
-- 無障礙細節：focus 樣式、狀態文字 aria-live
+- 依《天然災害停止上班及上課作業辦法》第 4 條的風力／雨量門檻計算基礎機率，再乘上縣市歷史傾向係數
+- 圓環儀表顯示結果，附法規檢核清單；日期預設為明天（台灣時間）
+- 「🙏 我覺得市長／縣長想放」按鈕：直接給 100%，但標明「許願模式・不是估算」，並同時列出依輸入條件的實際估算值
+- 首頁卡片直接顯示所選縣市的近 10 年颱風假機率，並提供人事行政總處官方公告連結
+- 「📍 定位」自動選縣市；選過的縣市、深淺色主題都會記住（預設淺色）
+- 響應式設計，手機優先；尊重「減少動態效果」設定
+- SEO：meta、Open Graph、canonical、JSON-LD（WebApplication＋FAQPage）、sitemap、robots
+- PWA：可加到主畫面；頁面與程式碼走網路優先，離線時退回快取
+- Facebook／Threads／LINE 分享、複製連結
+- 隱私權政策頁（`privacy.html`），符合 AdSense 要求
+
+## 檔案結構
+
+| 檔案 | 說明 |
+| --- | --- |
+| `index.html` | 頁面結構、SEO 標記 |
+| `assets/css/style.css` | 全站樣式（設計 token 在最上面） |
+| `assets/js/app.js` | 縣市資料、估算模型、介面互動 |
+| `privacy.html` | 隱私權政策 |
+| `sw.js` / `manifest.json` | PWA |
+
+## 法律注意事項（台灣）
+
+> 設計時參考的法規與對應做法，**不是法律意見**；正式商業合作前建議請律師確認。
+
+- **不實災害訊息**：《災害防救法》禁止散播有關災害之謠言或不實訊息，《社會秩序維護法》第 63 條處罰散布謠言。本站結果一律標示為「估算」，並附上官方公告連結，FAQ 也提醒不要把估算結果當成放假消息轉傳。
+- **氣象預報**：《氣象法》規定非經許可不得發布氣象預報。本站不產生天氣預報，風雨數值由使用者依中央氣象署預報自行輸入。
+- **個人資料**：不需註冊、沒有資料庫；定位座標只送到 OpenStreetMap 換成縣市名稱，不儲存（見 `privacy.html`）。
 
 ## 資料來源與係數計算方式
 
 | 項目 | 來源 | 說明 |
 | --- | --- | --- |
 | 風力／雨量門檻 | [天然災害停止上班及上課作業辦法](https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=S0110022) 第 4 條 | 平均風力 7 級以上或陣風 10 級以上；累積雨量達平地 350mm／山區 200mm 且已致災或有致災之虞 |
-| 縣市歷史傾向係数 | [近 10 年各縣市颱風假機率統計](https://ibuyranking.blogspot.com/2024/10/typhoon-day.html)（第三方部落格彙整公開停班公告紀錄，非官方數據） | 取各縣市「近10年颱風假機率」欄位，除以 22 縣市平均值，得出相對係數（例如屏東 87.5% ÷ 全國均值 55.0% ≈ 1.65 倍） |
+| 縣市歷史傾向係數 | [近 10 年各縣市颱風假機率統計](https://ibuyranking.blogspot.com/2024/10/typhoon-day.html)（第三方部落格彙整公開停班公告紀錄，非官方數據） | 取各縣市「近10年颱風假機率」欄位，除以 22 縣市平均值，得出相對係數（例如屏東 87.5% ÷ 全國均值 55.0% ≈ 1.65 倍） |
 
 法規門檻是「是否會停班停課」的判斷依據；縣市係數只是反映「同樣風雨條件下，這個縣市過去比較常/比較少宣布」的歷史傾向，兩者結合起來還是一個粗估，不是官方預測模型。
 
@@ -34,15 +48,14 @@
 
 本工具僅供參考娛樂，不構成任何官方停班停課保證。是否放假請以中央氣象署預報及各縣市政府正式公告為準，公告通常於前一日晚間 7 時至 10 時前發布。
 
-定位功能只在使用者主動按下按鈕時才會呼叫瀏覽器定位 API，座標僅傳送給 OpenStreetMap 的 Nominatim 反向地理編碼服務用來換成縣市名稱，本工具不會儲存座標，也不會傳送到其他地方。Nominatim 是免費公用服務，有基本流量限制（約每秒 1 次請求），一般個人使用沒問題；若之後流量變大，建議换成 Google Maps Geocoding API 之類的付費服務並用自己的 API Key。
+定位功能只在使用者主動按下按鈕時才會呼叫瀏覽器定位 API，座標僅傳送給 OpenStreetMap 的 Nominatim 反向地理編碼服務用來換成縣市名稱，本工具不會儲存座標，也不會傳送到其他地方。Nominatim 是免費公用服務，有基本流量限制（約每秒 1 次請求），一般個人使用沒問題；若之後流量變大，建議換成 Google Maps Geocoding API 之類的付費服務並用自己的 API Key。
 
-## 部署到 GitHub Pages（3 步驟）
+## 部署
 
-1. 在 GitHub 開一個新 repo（public，因為 GitHub Pages 免費版需要 public repo），把這個資料夾裡的 `index.html` 上傳進去。
-2. repo 的 Settings → Pages → Source 選擇 `main` branch、`/ (root)`，儲存。
-3. 等 1-2 分鐘，網址會出現在同一頁，通常是 `https://你的帳號.github.io/repo名稱/`。
+GitHub Pages：repo 的 Settings → Pages → Source 選 `main` branch、`/ (root)`。自訂網域由 `CNAME` 設定（`typhoon.sectools.tw`）。
 
 ## 之後想改
 
-- 想更新縣市係數：直接編輯 `index.html` 裡 `const counties = [...]` 這個陣列。
-- 想改門檻邏輯或文案：都在同一份 `index.html` 的 `<script>` 區塊裡，改完存檔、重新上傳到 repo 即可，不需要重新設定 Pages。
+- 縣市係數：`assets/js/app.js` 裡的 `COUNTIES` 陣列。
+- 估算邏輯：`app.js` 的 `estimate()`。
+- 改版後如果有新增檔案，記得把路徑加進 `sw.js` 的 `APP_SHELL` 並調高 `CACHE_NAME` 版本。
