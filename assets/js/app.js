@@ -316,6 +316,10 @@
     $('county').addEventListener('change', (e) => setCounty(e.target.value));
     updateCountyBadge();
     $('date').value = twDate(1);
+    // 首頁日期：頁面上的文字由每日排程寫入（給搜尋引擎看），這裡再依訪客當下時間校正
+    const [, m, d] = twDate(1).split('-').map(Number);
+    const dow = '日一二三四五六'[new Date(twDate(1) + 'T00:00:00Z').getUTCDay()];
+    $('heroDate').textContent = `${m}/${d}（${dow}）`;
     $('locateBtn').addEventListener('click', locateMe);
     $('calcForm').addEventListener('submit', calculate);
     $('wishBtn').addEventListener('click', () => calculate(null, true));

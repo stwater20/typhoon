@@ -1,0 +1,44 @@
+# 每天台灣時間 00:05 把網站上的「明天」日期更新成新的一天（颱風季才帶日期，見 scripts/update_date.py）
+name: Daily date update
+
+on:
+  schedule:
+    - cron: '5 16 * * *' # UTC 16:05 = 台灣時間 00:05
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: daily-date
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update dates
+        run: python3 scripts/update_date.py
+
+      - name: Commit and push if changed
+        id: commit
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "chore: update date for $(TZ=Asia/Taipei date -d tomorrow +%-m/%-d)"
+          git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      # 用 GITHUB_TOKEN 推送不一定會觸發 Pages 重新部署，這裡主動請求一次
+      - name: Request Pages build
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || echo "Pages build request failed; the push may still trigger a build."
