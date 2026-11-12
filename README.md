@@ -21,6 +21,17 @@
 - 導覽列、推薦卡片與頁尾都有連到 [sectools.tw](https://sectools.tw/) 的連結（帶 `utm_source=typhoon` 方便追蹤流量）
 - 隱私權政策頁（`privacy.html`），符合 AdSense 要求
 
+## 每日自動更新日期（SEO）
+
+很多人會搜尋「11/13 颱風假」這種「日期＋颱風假」的字。`.github/workflows/daily-date.yml` 每天台灣時間 00:05 執行 `scripts/update_date.py`：
+
+- **颱風季（5～11 月）**：把網頁標題、描述、社群分享標題、首頁日期換成「明天」，例如「11/13 颱風假？明天會放颱風假嗎｜颱風假機率計算器」，並更新 sitemap 的 `lastmod`
+- **其他月份**：恢復成不含日期的通用標題
+- 有變更才會 commit，接著請 GitHub Pages 重新部署；也可以在 Actions 頁面手動按「Run workflow」
+- 首頁日期另外由 JavaScript 依訪客當下時間校正，排程沒跑到也不會顯示錯的日期
+
+要改颱風季月份，改 `scripts/update_date.py` 裡的 `TYPHOON_MONTHS`。
+
 ## 檔案結構
 
 | 檔案 | 說明 |
@@ -28,6 +39,7 @@
 | `index.html` | 頁面結構、SEO 標記 |
 | `assets/css/style.css` | 全站樣式（設計 token 在最上面） |
 | `assets/js/app.js` | 縣市資料、估算模型、介面互動 |
+| `scripts/update_date.py` | 每日更新標題與 sitemap 日期（由 GitHub Actions 執行） |
 | `privacy.html` | 隱私權政策 |
 | `sw.js` / `manifest.json` | PWA |
 
